@@ -1,9 +1,9 @@
 const fontSizes = {
-  extraSmall: 20,
-  small: 22,
-  medium: 24,
-  large: 26,
-  extraLarge: 30,
+  extraSmall: 18,
+  small: 20,
+  medium: 22,
+  large: 24,
+  extraLarge: 28,
 } as const;
 
 const fontWeights = {

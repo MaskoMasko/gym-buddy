@@ -1,30 +1,26 @@
 import React, {ComponentType, ForwardedRef, forwardRef} from 'react';
-import {
-  ViewProps as RNViewProps,
-  ViewStyle,
-  TouchableOpacityProps as RNTouchableOpacityProps,
-} from 'react-native';
+import {ViewStyle} from 'react-native';
 import {sizes} from '../style/componentConstants';
 import {colors} from '../style/palette';
 
-interface LayoutProps {
-  paddingExtraSmall?: boolean;
-  paddingSmall?: boolean;
-  paddingMedium?: boolean;
-  paddingLarge?: boolean;
-  paddingExtraLarge?: boolean;
+export interface LayoutProps {
+  marginExtraSmall?: boolean;
+  marginSmall?: boolean;
+  marginMedium?: boolean;
+  marginLarge?: boolean;
+  marginExtraLarge?: boolean;
 
-  paddingVerticalExtraSmall?: boolean;
-  paddingVerticalSmall?: boolean;
-  paddingVerticalMedium?: boolean;
-  paddingVerticalLarge?: boolean;
-  paddingVerticalExtraLarge?: boolean;
+  marginVerticalExtraSmall?: boolean;
+  marginVerticalSmall?: boolean;
+  marginVerticalMedium?: boolean;
+  marginVerticalLarge?: boolean;
+  marginVerticalExtraLarge?: boolean;
 
-  paddingHorizontalExtraSmall?: boolean;
-  paddingHorizontalSmall?: boolean;
-  paddingHorizontalMedium?: boolean;
-  paddingHorizontalLarge?: boolean;
-  paddingHorizontalExtraLarge?: boolean;
+  marginHorizontalExtraSmall?: boolean;
+  marginHorizontalSmall?: boolean;
+  marginHorizontalMedium?: boolean;
+  marginHorizontalLarge?: boolean;
+  marginHorizontalExtraLarge?: boolean;
 
   backgroundColorTheme?: boolean;
   backgroundColorError?: boolean;
@@ -33,6 +29,10 @@ interface LayoutProps {
   backgroundColorLight?: boolean;
   backgroundColorSuccess?: boolean;
   backgroundColorAccent?: boolean;
+  backgroundColorLightDark?: boolean;
+  backgroundColorLightSoft?: boolean;
+  backgroundColorWhite?: boolean;
+  backgroundColorDarkGray?: boolean;
 
   flex?: boolean;
 
@@ -73,33 +73,31 @@ interface LayoutProps {
   flexDirectionRowReverse?: boolean;
   flexDirectionColumnReverse?: boolean;
 }
-type _InputComponentType<T> = T extends RNViewProps
-  ? RNViewProps
-  : RNTouchableOpacityProps;
-type InputComponentType<T> = LayoutProps & _InputComponentType<T>;
-export function withLayoutProps<T>(Component: ComponentType<T>) {
+export function withLayoutProps<T extends {style?: any}>(
+  Component: ComponentType<T>,
+) {
   return forwardRef(
     (
       {
         style: customStyle,
 
-        paddingExtraSmall,
-        paddingSmall,
-        paddingMedium,
-        paddingLarge,
-        paddingExtraLarge,
+        marginExtraSmall,
+        marginSmall,
+        marginMedium,
+        marginLarge,
+        marginExtraLarge,
 
-        paddingVerticalExtraSmall,
-        paddingVerticalSmall,
-        paddingVerticalMedium,
-        paddingVerticalLarge,
-        paddingVerticalExtraLarge,
+        marginVerticalExtraSmall,
+        marginVerticalSmall,
+        marginVerticalMedium,
+        marginVerticalLarge,
+        marginVerticalExtraLarge,
 
-        paddingHorizontalExtraSmall,
-        paddingHorizontalSmall,
-        paddingHorizontalMedium,
-        paddingHorizontalLarge,
-        paddingHorizontalExtraLarge,
+        marginHorizontalExtraSmall,
+        marginHorizontalSmall,
+        marginHorizontalMedium,
+        marginHorizontalLarge,
+        marginHorizontalExtraLarge,
 
         backgroundColorTheme,
         backgroundColorError,
@@ -108,6 +106,10 @@ export function withLayoutProps<T>(Component: ComponentType<T>) {
         backgroundColorLight,
         backgroundColorSuccess,
         backgroundColorAccent,
+        backgroundColorLightDark,
+        backgroundColorLightSoft,
+        backgroundColorWhite,
+        backgroundColorDarkGray,
 
         flex,
 
@@ -149,8 +151,8 @@ export function withLayoutProps<T>(Component: ComponentType<T>) {
         flexDirectionColumnReverse,
 
         ...otherProps
-      }: InputComponentType<T>,
-      ref: ForwardedRef<InputComponentType<T>>,
+      }: T & LayoutProps,
+      ref: ForwardedRef<T & LayoutProps>,
     ) => {
       function resolveFlexing() {
         const style: ViewStyle = {};
@@ -271,55 +273,75 @@ export function withLayoutProps<T>(Component: ComponentType<T>) {
           return colors.success;
         } else if (backgroundColorAccent) {
           return colors.accent;
+        } else if (backgroundColorLightDark) {
+          return colors.lightDark;
+        } else if (backgroundColorLightSoft) {
+          return colors.lightSoft;
+        } else if (backgroundColorWhite) {
+          return colors.white;
+        } else if (backgroundColorDarkGray) {
+          return colors.darkGray;
         } else {
           return undefined;
         }
       }
-      function resolvePadding() {
+      function resolveMargin() {
         const style: ViewStyle = {};
-        if (paddingExtraSmall) {
-          style.padding = sizes.extraSmall;
-        } else if (paddingSmall) {
-          style.padding = sizes.small;
-        } else if (paddingLarge) {
-          style.padding = sizes.large;
-        } else if (paddingExtraLarge) {
-          style.padding = sizes.extraLarge;
-        } else if (paddingMedium) {
-          style.padding = sizes.medium;
-        } else if (paddingVerticalExtraSmall) {
-          style.paddingVertical = sizes.extraSmall;
-        } else if (paddingVerticalSmall) {
-          style.paddingVertical = sizes.small;
-        } else if (paddingVerticalLarge) {
-          style.paddingVertical = sizes.large;
-        } else if (paddingVerticalExtraLarge) {
-          style.paddingVertical = sizes.extraLarge;
-        } else if (paddingVerticalMedium) {
-          style.paddingVertical = sizes.medium;
-        } else if (paddingHorizontalExtraSmall) {
-          style.paddingHorizontal = sizes.extraSmall;
-        } else if (paddingHorizontalSmall) {
-          style.paddingHorizontal = sizes.small;
-        } else if (paddingHorizontalLarge) {
-          style.paddingHorizontal = sizes.large;
-        } else if (paddingHorizontalExtraLarge) {
-          style.paddingHorizontal = sizes.extraLarge;
-        } else if (paddingHorizontalMedium) {
-          style.paddingHorizontal = sizes.medium;
-        } else {
-          style.padding = 0;
+        if (marginExtraSmall) {
+          style.margin = sizes.extraSmall;
+        }
+        if (marginSmall) {
+          style.margin = sizes.small;
+        }
+        if (marginLarge) {
+          style.margin = sizes.large;
+        }
+        if (marginExtraLarge) {
+          style.margin = sizes.extraLarge;
+        }
+        if (marginMedium) {
+          style.margin = sizes.medium;
+        }
+        if (marginVerticalExtraSmall) {
+          style.marginVertical = sizes.extraSmall;
+        }
+        if (marginVerticalSmall) {
+          style.marginVertical = sizes.small;
+        }
+        if (marginVerticalLarge) {
+          style.marginVertical = sizes.large;
+        }
+        if (marginVerticalExtraLarge) {
+          style.marginVertical = sizes.extraLarge;
+        }
+        if (marginVerticalMedium) {
+          style.marginVertical = sizes.medium;
+        }
+        if (marginHorizontalExtraSmall) {
+          style.marginHorizontal = sizes.extraSmall;
+        }
+        if (marginHorizontalSmall) {
+          style.marginHorizontal = sizes.small;
+        }
+        if (marginHorizontalLarge) {
+          style.marginHorizontal = sizes.large;
+        }
+        if (marginHorizontalExtraLarge) {
+          style.marginHorizontal = sizes.extraLarge;
+        }
+        if (marginHorizontalMedium) {
+          style.marginHorizontal = sizes.medium;
         }
         return style;
       }
       const style: ViewStyle = {
         ...resolveFlexing(),
-        ...resolvePadding(),
+        ...resolveMargin(),
         backgroundColor: resolveBackgroundColor(),
       };
       return (
         //I found a workaround for any, but when I do it I need to pass generic type
-        //If we don't pass generic type, components will be confused, and simply no
+        //If we don't pass generic type, components will be confused, and
         //Understandable, have a nice day
         <Component
           ref={ref}

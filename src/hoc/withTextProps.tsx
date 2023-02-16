@@ -1,9 +1,6 @@
 import React, {ComponentType, ForwardedRef, forwardRef} from 'react';
-import {
-  TextInputProps as RNTextInputProps,
-  TextProps as RNTextProps,
-  TextStyle,
-} from 'react-native';
+import {TextStyle} from 'react-native';
+import {colors} from '../style/palette';
 import {
   fontColors,
   fontFamily,
@@ -42,14 +39,22 @@ interface TextProps {
   colorRed?: boolean;
   colorYellow?: boolean;
   colorDisabled?: boolean;
+
+  //align
+  alignSelfCenter?: boolean;
+
+  //background colors
+  backgroundColorTheme?: boolean;
+  backgroundColorError?: boolean;
+  backgroundColorWarning?: boolean;
+  backgroundColorDark?: boolean;
+  backgroundColorLight?: boolean;
+  backgroundColorSuccess?: boolean;
+  backgroundColorAccent?: boolean;
 }
-//for some reason if we check if T extends RNTextInputProps,
-//both Text and TextInput component get same type, so we check for a prop that only one has
-type _InputComponentType<T> = T extends {focusable?: boolean}
-  ? RNTextInputProps
-  : RNTextProps;
-type InputComponentType<T> = TextProps & _InputComponentType<T>;
-export function withTextProps<T>(Component: ComponentType<T>) {
+export function withTextProps<T extends {style?: any}>(
+  Component: ComponentType<T>,
+) {
   return forwardRef(
     (
       {
@@ -74,10 +79,19 @@ export function withTextProps<T>(Component: ComponentType<T>) {
         colorRed,
         colorYellow,
         colorDisabled,
+        alignSelfCenter,
+
+        backgroundColorTheme,
+        backgroundColorError,
+        backgroundColorWarning,
+        backgroundColorDark,
+        backgroundColorLight,
+        backgroundColorSuccess,
+        backgroundColorAccent,
 
         ...otherProps
-      }: InputComponentType<T>,
-      ref: ForwardedRef<InputComponentType<T>>,
+      }: TextProps & T,
+      ref: ForwardedRef<TextProps & T>,
     ) => {
       function resolveFontSize() {
         if (extraSmall) {
@@ -145,13 +159,38 @@ export function withTextProps<T>(Component: ComponentType<T>) {
           return fontFamily.kanit.regular;
         }
       }
+      function resolveBackgroundColor() {
+        if (backgroundColorTheme) {
+          return colors.theme;
+        } else if (backgroundColorError) {
+          return colors.error;
+        } else if (backgroundColorWarning) {
+          return colors.warning;
+        } else if (backgroundColorDark) {
+          return colors.dark;
+        } else if (backgroundColorLight) {
+          return colors.light;
+        } else if (backgroundColorSuccess) {
+          return colors.success;
+        } else if (backgroundColorAccent) {
+          return colors.accent;
+        } else {
+          return undefined;
+        }
+      }
 
       const style: TextStyle = {
         fontSize: resolveFontSize(),
         fontWeight: resolveFontWeight(),
         color: resolveFontColor(),
         fontFamily: resolveFontFamily(),
+        backgroundColor: resolveBackgroundColor(),
       };
+
+      if (alignSelfCenter) {
+        style.alignSelf = 'center';
+      }
+
       return (
         //I found a workaround for any, but when I do it I need to pass generic type
         //If we don't pass generic type, components will be confused, and simply no
