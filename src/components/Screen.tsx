@@ -31,6 +31,7 @@ export const Screen = ({children, preventScroll}: ScreenProps) => {
     <ScrollView style={styles.container} bounces={!preventScroll}>
       <KeyboardAvoidingView
         style={[styles.container, styles.minHeight]}
+        keyboardVerticalOffset={-(insets.bottom + insets.top)}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View
           style={[
