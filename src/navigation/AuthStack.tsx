@@ -1,42 +1,26 @@
-import {useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {Pressable} from 'react-native';
+import {AuthStackHeader} from '../components/AuthStackHeader';
 import {LoginScreen} from '../screens/auth/LoginScreen';
 import {SignUpScreen} from '../screens/auth/SignUpScreen';
-import {Icon} from '../svg/icons/Icon';
-import {HeaderBackButtonProps} from '@react-navigation/native-stack/lib/typescript/src/types';
+import {WelcomeScreen} from '../screens/auth/WelcomeScreen';
 
 const Stack = createNativeStackNavigator();
-
-const BackArrowHeaderButton = (props: HeaderBackButtonProps) => {
-  const navigation = useNavigation();
-  return (
-    <Pressable
-      onPress={() => (props.canGoBack ? navigation.goBack() : null)}
-      hitSlop={{top: 5, left: 5, right: 5, bottom: 5}}>
-      <Icon name="back-arrow" />
-    </Pressable>
-  );
-};
 
 export const AuthStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerBackTitleVisible: false,
-        headerLeft: BackArrowHeaderButton,
+        header: AuthStackHeader,
       }}>
       <Stack.Screen
         options={{headerShown: false}}
-        name="LoginScreen"
-        component={LoginScreen}
+        name="WelcomeScreen"
+        component={WelcomeScreen}
       />
-      <Stack.Screen
-        options={{headerShown: false}}
-        name="SignUpScreen"
-        component={SignUpScreen}
-      />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
     </Stack.Navigator>
   );
 };

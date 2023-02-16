@@ -1,22 +1,19 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  useWindowDimensions,
-} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {ImageBackground, StyleSheet, useWindowDimensions} from 'react-native';
 import {Button} from '../../components/Button';
+import {OrDivider} from '../../components/OrDivider';
 import {Screen} from '../../components/Screen';
-import {Spacer} from '../../components/Spacer';
 import {Text} from '../../components/Text';
 import {TextInput} from '../../components/TextInput';
 import {View} from '../../components/View';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Spacer} from '../../components/Spacer';
 import {sizes} from '../../style/componentConstants';
-import {colors} from '../../style/palette';
 
-export const LoginScreen = () => {
+export const WelcomeScreen = () => {
   const styles = useStyles();
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
 
   return (
@@ -29,26 +26,12 @@ export const LoginScreen = () => {
         <Text
           colorWhite
           weightMedium
-          style={{fontSize: sizes.medium * 2, paddingLeft: sizes.large}}>
-          Login
+          style={{fontSize: sizes.medium * 2}}
+          alignSelfCenter>
+          Welcome to GymBuddy!
         </Text>
         <View marginSmall style={styles.backgroundLightDarkContainer}>
           <View marginVerticalMedium marginHorizontalExtraLarge>
-            <View flex flexDirectionRow marginVerticalSmall>
-              <Image
-                source={require('../../assets/images/default-profile-img.png')}
-                style={styles.userProfileImage}
-              />
-              <Spacer small />
-              <View>
-                <Text extraSmall weightSemibold colorWhite>
-                  Masko Masko
-                </Text>
-                <Text extraSmall colorWhite>
-                  masko.masko@gmail.com
-                </Text>
-              </View>
-            </View>
             <TextInput
               label={'Email'}
               value={email}
@@ -57,9 +40,31 @@ export const LoginScreen = () => {
               autoCorrect={false}
               autoCapitalize={'none'}
             />
-            <Spacer extraSmall />
             <Button>Continue</Button>
+            <OrDivider />
+            <View marginVerticalSmall>
+              <Button rightIconName={'google'} light>
+                Continue with Google
+              </Button>
+              <Spacer extraSmall />
+              <Button rightIconName={'apple'} light>
+                Continue with Apple
+              </Button>
+            </View>
             <Spacer small />
+            <View flexDirectionRow>
+              <Text extraSmall colorOffWhite>
+                Don't have an account?{' '}
+              </Text>
+              <Text
+                colorDisabled
+                extraSmall
+                onPress={() => {
+                  navigation.navigate('SignUpScreen' as never);
+                }}>
+                Sign up
+              </Text>
+            </View>
             <Text colorDisabled extraSmall>
               Forgot your password?
             </Text>
@@ -82,12 +87,6 @@ const useStyles = () => {
     backgroundLightDarkContainer: {
       borderRadius: 10,
       backgroundColor: 'rgba(0,0,0, .6)',
-    },
-    userProfileImage: {
-      borderRadius: 50,
-      width: 50,
-      height: 50,
-      backgroundColor: colors.disabled,
     },
   });
 };
