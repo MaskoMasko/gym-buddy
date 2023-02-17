@@ -57,10 +57,10 @@ export const TextInput = ({
         <RNTextInput
           style={[styles.textContainer, styles.textInputPaddingTop]}
           placeholder={placeholder ?? label}
-          secureTextEntry={isPassword && isPasswordVisible}
+          secureTextEntry={!(isPassword && isPasswordVisible)}
           {...props}
         />
-        {isPassword && (
+        {isPassword && isValueValid && (
           <Text
             style={rightIcon}
             onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
