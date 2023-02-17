@@ -60,7 +60,7 @@ export const WelcomeScreen = () => {
                 colorDisabled
                 extraSmall
                 onPress={() => {
-                  navigation.navigate('SignUpScreen' as never);
+                  navigation.navigate('SignUpScreen');
                 }}>
                 Sign up
               </Text>

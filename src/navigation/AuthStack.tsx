@@ -4,8 +4,9 @@ import {AuthStackHeader} from '../components/AuthStackHeader';
 import {LoginScreen} from '../screens/auth/LoginScreen';
 import {SignUpScreen} from '../screens/auth/SignUpScreen';
 import {WelcomeScreen} from '../screens/auth/WelcomeScreen';
+import {AuthStackParamList} from './RouterTypes';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export const AuthStack = () => {
   return (

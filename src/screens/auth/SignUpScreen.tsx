@@ -55,10 +55,9 @@ export const SignUpScreen = () => {
               onChangeText={setPassword}
               autoCorrect={false}
               autoCapitalize={'none'}
-              textContentType={'password'}
-              secureTextEntry
+              password
             />
-            <View marginVerticalExtraSmall>
+            <View marginVerticalSmall>
               <Text colorWhite extraSmall>
                 By selecting Agree and continue below, I agree to{' '}
                 <Text colorWhite extraSmall weightSemibold>
@@ -66,7 +65,7 @@ export const SignUpScreen = () => {
                 </Text>
               </Text>
             </View>
-            <Button onPress={() => navigation.navigate('LoginScreen' as never)}>
+            <Button onPress={() => navigation.navigate('LoginScreen')}>
               Agree and continue
             </Button>
           </View>

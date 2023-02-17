@@ -14,9 +14,11 @@ import {TextInput} from '../../components/TextInput';
 import {View} from '../../components/View';
 import {sizes} from '../../style/componentConstants';
 import {colors} from '../../style/palette';
+import useAuth from '../../hooks/useAuth';
 
 export const LoginScreen = () => {
   const styles = useStyles();
+  const {setIsLoggedIn} = useAuth();
   const [email, setEmail] = useState('');
 
   return (
@@ -58,7 +60,7 @@ export const LoginScreen = () => {
               autoCapitalize={'none'}
             />
             <Spacer extraSmall />
-            <Button>Continue</Button>
+            <Button onPress={() => setIsLoggedIn(true)}>Continue</Button>
             <Spacer small />
             <Text colorDisabled extraSmall>
               Forgot your password?

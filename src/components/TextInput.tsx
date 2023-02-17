@@ -1,10 +1,10 @@
+import React, {useState} from 'react';
 import {
   TextInput as RNTextInput,
-  StyleSheet,
   TextInputProps as RNTextInputProps,
+  StyleSheet,
   TextStyle,
 } from 'react-native';
-import React from 'react';
 // import {withTextProps} from '../hoc/withTextProps';
 import {colors} from '../style/palette';
 import {fontSizes} from '../style/typography';
@@ -13,10 +13,18 @@ import {View} from './View';
 
 interface TextInputProps extends RNTextInputProps {
   label: string;
+  password?: boolean;
 }
 
-export const TextInput = ({label, placeholder, ...props}: TextInputProps) => {
+export const TextInput = ({
+  label,
+  placeholder,
+  password,
+  ...props
+}: TextInputProps) => {
   const isValueValid = Boolean(props.value?.length);
+  const isPassword = password;
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const labelStyle: TextStyle = {
     position: 'absolute',
     left: 0,
@@ -26,6 +34,18 @@ export const TextInput = ({label, placeholder, ...props}: TextInputProps) => {
     color: colors.lightDark,
     zIndex: 2,
   } as const;
+  const rightIcon: TextStyle = {
+    position: 'absolute',
+    top: '50%',
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 10,
+    fontSize: 15,
+    // kinda hardcoded
+    transform: [{translateY: -10}],
+    color: isPasswordVisible ? colors.lightDark : colors.disabled,
+    zIndex: 2,
+  };
   if (label && label.length) {
     return (
       <View style={styles.relative}>
@@ -37,12 +57,26 @@ export const TextInput = ({label, placeholder, ...props}: TextInputProps) => {
         <RNTextInput
           style={[styles.textContainer, styles.textInputPaddingTop]}
           placeholder={placeholder ?? label}
+          secureTextEntry={isPassword && isPasswordVisible}
           {...props}
         />
+        {isPassword && (
+          <Text
+            style={rightIcon}
+            onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+            {isPasswordVisible ? 'Hide' : 'Show'}
+          </Text>
+        )}
       </View>
     );
   }
-  return <RNTextInput style={styles.textContainer} {...props} />;
+  return (
+    <RNTextInput
+      style={styles.textContainer}
+      secureTextEntry={isPassword}
+      {...props}
+    />
+  );
 };
 
 const styles = StyleSheet.create({

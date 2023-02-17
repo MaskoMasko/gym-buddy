@@ -1,19 +1,19 @@
-import React from 'react';
-import {
-  NativeStackHeaderProps,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {sizes} from '../style/componentConstants';
-import {Icon} from '../svg/icons/Icon';
-import {Text} from './Text';
-import {View} from './View';
-import {TouchableOpacity} from './TouchableOpacity';
-import {Image, StyleSheet} from 'react-native';
 import {
   BottomTabHeaderProps,
   BottomTabNavigationOptions,
 } from '@react-navigation/bottom-tabs';
+import {
+  NativeStackHeaderProps,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
+import React from 'react';
+import {Image, StyleSheet} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {sizes} from '../style/componentConstants';
+import {Icon} from '../svg/icons/Icon';
+import {Text} from './Text';
+import {TouchableOpacity} from './TouchableOpacity';
+import {View} from './View';
 
 type HeaderType = BottomTabHeaderProps | NativeStackHeaderProps;
 interface AdditionalNativeStackHeaderOptionProps
