@@ -15,8 +15,8 @@ export type RootBottomTabParamList = {
 
 export type AuthStackParamList = {
   WelcomeScreen: undefined;
-  LoginScreen: undefined;
-  SignUpScreen: undefined;
+  LoginScreen: {email: string; username: string};
+  SignUpScreen: {email: string} | undefined;
 };
 
 export type RootBottomTabNavigationProps<

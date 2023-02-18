@@ -10,11 +10,24 @@ import {View} from '../../components/View';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Spacer} from '../../components/Spacer';
 import {sizes} from '../../style/componentConstants';
+import useAuth from '../../hooks/useAuth';
+import * as yup from 'yup';
+
+const welcomeSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter a valid email')
+    .required('Email is required'),
+});
 
 export const WelcomeScreen = () => {
   const styles = useStyles();
   const navigation = useNavigation();
-  const [email, setEmail] = useState('');
+  const [formData, setFormData] = useState({email: ''});
+  const [validationErrors, setValidationErrors] = useState<Record<any, any>>(
+    {},
+  );
+  const {login} = useAuth();
 
   return (
     <Screen preventScroll>
@@ -34,13 +47,56 @@ export const WelcomeScreen = () => {
           <View marginVerticalMedium marginHorizontalExtraLarge>
             <TextInput
               label={'Email'}
-              value={email}
+              value={formData.email}
               placeholder={'Enter email'}
-              onChangeText={setEmail}
+              onChangeText={text => {
+                setFormData({...formData, ['email']: text});
+                if (validationErrors.email) {
+                  setValidationErrors({
+                    ...validationErrors,
+                    ['email']: null,
+                  });
+                }
+              }}
               autoCorrect={false}
               autoCapitalize={'none'}
             />
-            <Button>Continue</Button>
+            {validationErrors.email && (
+              <Text colorRed extraSmall>
+                {validationErrors.email}
+              </Text>
+            )}
+            <Button
+              onPress={async () => {
+                await welcomeSchema
+                  .validate(formData, {abortEarly: false})
+                  .then(async () => {
+                    const response = await login({email: formData.email});
+                    if (response?.data.user) {
+                      if (!response.data.user.emailVerified) {
+                        setValidationErrors({email: 'Email is not verified'});
+                      } else {
+                        navigation.navigate('LoginScreen', {
+                          email: formData.email,
+                          username: response.data.user.name,
+                        });
+                      }
+                    } else {
+                      navigation.navigate('SignUpScreen', {
+                        email: formData.email,
+                      });
+                    }
+                  })
+                  .catch((err: any) => {
+                    const errors = {};
+                    err.inner.forEach((error: any) => {
+                      (errors as any)[(error as any).path] = error.message;
+                    });
+                    setValidationErrors(errors);
+                  });
+              }}>
+              Continue
+            </Button>
             <OrDivider />
             <View marginVerticalSmall>
               <Button rightIconName={'google'} light>

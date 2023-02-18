@@ -24,7 +24,7 @@ export const TextInput = ({
 }: TextInputProps) => {
   const isValueValid = Boolean(props.value?.length);
   const isPassword = password;
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(!isPassword);
   const labelStyle: TextStyle = {
     position: 'absolute',
     left: 0,
@@ -46,36 +46,27 @@ export const TextInput = ({
     color: isPasswordVisible ? colors.lightDark : colors.disabled,
     zIndex: 2,
   };
-  if (label && label.length) {
-    return (
-      <View style={styles.relative}>
-        {isValueValid && (
-          <Text weightLight style={labelStyle}>
-            {label}
-          </Text>
-        )}
-        <RNTextInput
-          style={[styles.textContainer, styles.textInputPaddingTop]}
-          placeholder={placeholder ?? label}
-          secureTextEntry={!(isPassword && isPasswordVisible)}
-          {...props}
-        />
-        {isPassword && isValueValid && (
-          <Text
-            style={rightIcon}
-            onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-            {isPasswordVisible ? 'Hide' : 'Show'}
-          </Text>
-        )}
-      </View>
-    );
-  }
   return (
-    <RNTextInput
-      style={styles.textContainer}
-      secureTextEntry={isPassword}
-      {...props}
-    />
+    <View style={styles.relative}>
+      {isValueValid && (
+        <Text weightLight style={labelStyle}>
+          {label}
+        </Text>
+      )}
+      <RNTextInput
+        style={[styles.textContainer, styles.textInputPaddingTop]}
+        placeholder={placeholder ?? label}
+        secureTextEntry={!isPasswordVisible}
+        {...props}
+      />
+      {isPassword && isValueValid && (
+        <Text
+          style={rightIcon}
+          onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+          {isPasswordVisible ? 'Hide' : 'Show'}
+        </Text>
+      )}
+    </View>
   );
 };
 

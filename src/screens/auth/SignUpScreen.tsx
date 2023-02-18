@@ -7,14 +7,36 @@ import {Spacer} from '../../components/Spacer';
 import {Text} from '../../components/Text';
 import {TextInput} from '../../components/TextInput';
 import {View} from '../../components/View';
+import {AuthStackNavigationProps} from '../../navigation/RouterTypes';
 import {sizes} from '../../style/componentConstants';
-import {useNavigation} from '@react-navigation/native';
+import useAuth from '../../hooks/useAuth';
+import * as yup from 'yup';
 
-export const SignUpScreen = () => {
+const signupSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter a valid email')
+    .required('Email is required'),
+  password: yup.string().required('Password is required'),
+  name: yup.string().required('Username is required'),
+});
+
+export const SignUpScreen = ({
+  navigation,
+  route,
+}: AuthStackNavigationProps<'SignUpScreen'>) => {
+  const email = route.params?.email;
+  const isEmail = Boolean(email);
   const styles = useStyles();
-  const navigation = useNavigation();
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const {signup} = useAuth();
+  const [formData, setFormData] = useState({
+    email: email ?? '',
+    password: 'test1234',
+    name: 'this is my other name',
+  });
+  const [validationErrors, setValidationErrors] = useState<Record<any, any>>(
+    {},
+  );
   return (
     <Screen preventScroll>
       <ImageBackground
@@ -30,33 +52,94 @@ export const SignUpScreen = () => {
         </Text>
         <View marginSmall style={styles.backgroundLightDarkContainer}>
           <View marginVerticalMedium marginHorizontalExtraLarge>
-            <Text colorWhite extraSmall>
-              Looks like you don't have an account.
-            </Text>
-            <Text colorWhite extraSmall>
-              Let's create a new account for{' '}
-              <Text weightSemibold colorWhite extraSmall>
-                something@gmail.com
-              </Text>
-            </Text>
+            {isEmail ? (
+              <>
+                <Text colorWhite extraSmall>
+                  Looks like you don't have an account.
+                </Text>
+                <Text colorWhite extraSmall>
+                  Let's create a new account for{' '}
+                  <Text weightSemibold colorWhite extraSmall>
+                    {email}
+                  </Text>
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text colorWhite extraSmall>
+                  Looks like you don't have an account. Let's create a new one.
+                </Text>
+              </>
+            )}
             <Spacer extraSmall />
             <TextInput
               label={'Name'}
-              value={name}
+              value={formData.name}
               placeholder={'Enter username'}
-              onChangeText={setName}
+              onChangeText={text => {
+                setFormData({...formData, ['name']: text});
+                if (validationErrors.name) {
+                  setValidationErrors({
+                    ...validationErrors,
+                    ['name']: null,
+                  });
+                }
+              }}
               autoCorrect={false}
               autoCapitalize={'none'}
             />
+            {validationErrors.name && (
+              <Text colorRed extraSmall>
+                {validationErrors.name}
+              </Text>
+            )}
+            {!isEmail && (
+              <>
+                <TextInput
+                  label={'Email'}
+                  value={formData.email}
+                  placeholder={'Enter email'}
+                  onChangeText={text => {
+                    setFormData({...formData, ['email']: text});
+                    if (validationErrors.email) {
+                      setValidationErrors({
+                        ...validationErrors,
+                        ['email']: null,
+                      });
+                    }
+                  }}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                />
+                {validationErrors.email && (
+                  <Text colorRed extraSmall>
+                    {validationErrors.email}
+                  </Text>
+                )}
+              </>
+            )}
             <TextInput
               label={'Password'}
-              value={password}
+              value={formData.password}
               placeholder={'Enter password'}
-              onChangeText={setPassword}
+              onChangeText={text => {
+                setFormData({...formData, ['password']: text});
+                if (validationErrors.password) {
+                  setValidationErrors({
+                    ...validationErrors,
+                    ['password']: null,
+                  });
+                }
+              }}
               autoCorrect={false}
               autoCapitalize={'none'}
               password
             />
+            {validationErrors.password && (
+              <Text colorRed extraSmall>
+                {validationErrors.password}
+              </Text>
+            )}
             <View marginVerticalSmall>
               <Text colorWhite extraSmall>
                 By selecting Agree and continue below, I agree to{' '}
@@ -65,7 +148,35 @@ export const SignUpScreen = () => {
                 </Text>
               </Text>
             </View>
-            <Button onPress={() => navigation.navigate('LoginScreen')}>
+            <Button
+              onPress={async () => {
+                await signupSchema
+                  .validate(formData, {abortEarly: false})
+                  .then(async () => {
+                    const response = await signup({...formData});
+                    if (response?.data.userExists) {
+                      setValidationErrors({
+                        ...validationErrors,
+                        email: response.data.message,
+                      });
+                      return;
+                    }
+                    if (response?.data.message) {
+                      navigation.navigate('WelcomeScreen');
+                    } else {
+                      throw Error(
+                        'Error while creating a user. Try again later!',
+                      );
+                    }
+                  })
+                  .catch((err: any) => {
+                    const errors = {};
+                    err.inner.forEach((error: any) => {
+                      (errors as any)[(error as any).path] = error.message;
+                    });
+                    setValidationErrors(errors);
+                  });
+              }}>
               Agree and continue
             </Button>
           </View>
