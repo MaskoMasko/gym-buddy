@@ -2,6 +2,8 @@ import type {RouteProp} from '@react-navigation/native';
 import type {StackNavigationProp} from '@react-navigation/stack';
 import type {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 
+export type TabBarIconProps = {focused: boolean; color: string; size: number};
+
 export type RootNavigationParamList = RootBottomTabParamList &
   AuthStackParamList;
 

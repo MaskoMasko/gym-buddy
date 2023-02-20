@@ -54,7 +54,7 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
     name: string;
   }) {
     const data = {email, password, name};
-    AsyncStorage.clear();
+    await AsyncStorage.clear();
     try {
       const response = await http.post('/signup', data);
       console.log(response);
