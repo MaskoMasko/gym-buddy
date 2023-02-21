@@ -1,11 +1,11 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {Header} from '../components/Header';
-import {BlogsScreen} from '../screens/BlogsScreen';
-import {HomeScreen} from '../screens/HomeScreen';
-import {MessagesScreen} from '../screens/MessagesScreen';
-import {StatisticsScreen} from '../screens/StatisticsScreen';
-import {WorkoutsScreen} from '../screens/WorkoutsScreen';
+import {BlogsScreen} from '../features/fitness-news/BlogsScreen';
+import {HomeScreen} from '../features/home/HomeScreen';
+import {MessagesScreen} from '../features/messages/MessagesScreen';
+import {StatisticsScreen} from '../features/statistics/StatisticsScreen';
+import {WorkoutsScreen} from '../features/workout-sessions/WorkoutsScreen';
 import {RootBottomTabParamList, TabBarIconProps} from './RouterTypes';
 import {Icon} from '../svg/icons/Icon';
 import {colors} from '../style/palette';

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
-import {View} from '../components/View';
-import {Screen} from '../components/Screen';
+import {View} from '../../components/View';
+import {Screen} from '../../components/Screen';
 import Geolocation from '@react-native-community/geolocation';
-import {Icon} from '../svg/icons/Icon';
-import {colors} from '../style/palette';
+import {Icon} from '../../svg/icons/Icon';
+import {colors} from '../../style/palette';
 import {StyleSheet} from 'react-native';
 
 export const HomeScreen = () => {
