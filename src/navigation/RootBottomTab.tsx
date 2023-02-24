@@ -66,7 +66,7 @@ export const RootBottomTab = () => {
           {
             title: 'GymBuddy',
             shouldRenderLogo: true,
-            headerShown: false,
+            // headerShown: false,
             tabBarIcon: ({focused}: TabBarIconProps) => (
               <View style={styles.tabItemFloat}>
                 <View style={[styles.mainTabBarItem, styles.shadows]}>

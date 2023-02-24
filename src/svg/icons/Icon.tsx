@@ -25,11 +25,24 @@ export interface IconProps {
     | 'projection'
     | 'google'
     | 'apple'
+    | 'user-add'
     | 'blog';
 }
 
 export const Icon = ({name, color = colors.dark, size = 24}: IconProps) => {
   switch (name) {
+    case 'user-add':
+      return (
+        <Svg viewBox="0 0 24 24" fill="none" height={size} width={size}>
+          <Path
+            d="M4 20v-1a5 5 0 0 1 5-5h3.75m4.785-.036V17.5m0 0v3.535m0-3.535h3.536m-3.536 0H14M15 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+            stroke={color}
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
     case 'back-arrow':
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">

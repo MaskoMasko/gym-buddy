@@ -6,8 +6,11 @@ import Geolocation from '@react-native-community/geolocation';
 import {Icon} from '../../svg/icons/Icon';
 import {colors} from '../../style/palette';
 import {StyleSheet} from 'react-native';
+import {SocialBarHeader} from './SocialBarHeader';
 
+export const dropdownToggleButtonHeight = 25;
 export const HomeScreen = () => {
+  const [socialHeaderHeight, setSocialHeaderHeight] = useState(0);
   const [currentLocation, setCurrentLocation] = useState<
     | {
         latitude: number;
@@ -40,6 +43,18 @@ export const HomeScreen = () => {
           </MapView>
         )}
       </View>
+      <View
+        style={[
+          styles.dropdownToggleButtonContainerAbsolute,
+          {
+            top: -socialHeaderHeight + dropdownToggleButtonHeight,
+          },
+        ]}
+        onLayout={event => {
+          setSocialHeaderHeight(event.nativeEvent.layout.height);
+        }}>
+        <SocialBarHeader />
+      </View>
     </Screen>
   );
 };
@@ -53,5 +68,10 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
+  },
+  dropdownToggleButtonContainerAbsolute: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
   },
 });
