@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   dropdownToggleButtonContainer: {
     backgroundColor: 'rgba(0,0,0,.5)',
     height: dropdownToggleButtonHeight,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
 });
