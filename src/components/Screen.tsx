@@ -7,10 +7,18 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {View} from './View';
+import {LoadingView} from './LoadingView';
+import {ErrorView} from './ErrorView';
 
 interface ScreenProps {
   children: React.ReactNode;
   preventScroll?: boolean;
+  queryStatus?: {
+    loading: boolean;
+    error: boolean;
+  };
+  withoutTopInsets?: boolean;
+  withoutBottomInsets?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -25,7 +33,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Screen = ({children, preventScroll}: ScreenProps) => {
+export const Screen = ({
+  children,
+  preventScroll,
+  queryStatus,
+  withoutTopInsets,
+  withoutBottomInsets,
+}: ScreenProps) => {
   const insets = useSafeAreaInsets();
   return (
     <ScrollView style={styles.container} bounces={!preventScroll}>
@@ -37,11 +51,17 @@ export const Screen = ({children, preventScroll}: ScreenProps) => {
           style={[
             styles.flexGrow,
             {
-              paddingTop: insets.top,
-              paddingBottom: insets.bottom,
+              paddingTop: withoutTopInsets ? 0 : insets.top,
+              paddingBottom: withoutBottomInsets ? 0 : insets.bottom,
             },
           ]}>
-          {children}
+          {queryStatus?.loading ? (
+            <LoadingView />
+          ) : queryStatus?.error ? (
+            <ErrorView />
+          ) : (
+            <>{children}</>
+          )}
         </View>
       </KeyboardAvoidingView>
     </ScrollView>

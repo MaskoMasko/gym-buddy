@@ -33,6 +33,7 @@ export interface LayoutProps {
   backgroundColorLightSoft?: boolean;
   backgroundColorWhite?: boolean;
   backgroundColorDarkGray?: boolean;
+  backgroundColorDisabled?: boolean;
 
   flex?: boolean;
 
@@ -110,6 +111,7 @@ export function withLayoutProps<T extends {style?: any}>(
         backgroundColorLightSoft,
         backgroundColorWhite,
         backgroundColorDarkGray,
+        backgroundColorDisabled,
 
         flex,
 
@@ -281,6 +283,8 @@ export function withLayoutProps<T extends {style?: any}>(
           return colors.white;
         } else if (backgroundColorDarkGray) {
           return colors.darkGray;
+        } else if (backgroundColorDisabled) {
+          return colors.disabled;
         } else {
           return undefined;
         }

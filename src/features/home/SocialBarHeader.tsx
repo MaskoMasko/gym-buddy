@@ -10,6 +10,8 @@ import {TouchableOpacity} from '../../components/TouchableOpacity';
 import {View} from '../../components/View';
 import {Icon} from '../../svg/icons/Icon';
 import {dropdownToggleButtonHeight} from './HomeScreen';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackNavigationProps} from '../../navigation/RouterTypes';
 
 export const SocialBarHeader = () => {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -20,6 +22,8 @@ export const SocialBarHeader = () => {
       transform: [{translateY: translateY.value}],
     };
   });
+  const navigation =
+    useNavigation<RootStackNavigationProps<'RootBottomTab'>['navigation']>();
   return (
     <Animated.View
       onLayout={event => {
@@ -28,21 +32,21 @@ export const SocialBarHeader = () => {
         );
       }}
       style={animatedStyle}>
-      <View
-        // marginHorizontalLarge
-        flexDirectionRow
-        centerContent
-        style={styles.headerContainer}>
+      <View flexDirectionRow centerContent style={styles.headerContainer}>
         <View flex marginSmall>
           <TextInput label={'Search places'} />
         </View>
-        <View
+        <TouchableOpacity
           backgroundColorLight
           marginSmall
           style={styles.headerIcon}
-          centerContent>
+          centerContent
+          activeOpacity={0.7}
+          onPress={() => {
+            navigation.navigate('AddFriendsScreen');
+          }}>
           <Icon name={'user-add'} />
-        </View>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.dropdownToggleButtonContainer}
@@ -65,8 +69,6 @@ export const SocialBarHeader = () => {
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: 'rgba(0,0,0,.5)',
-    // borderRadius: 15,
-    // paddingHorizontal: 10,
   },
   headerIcon: {borderRadius: 15, padding: 12},
   dropdownToggleButton: {

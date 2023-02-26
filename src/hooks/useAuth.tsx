@@ -1,9 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AxiosResponse} from 'axios';
 import React, {createContext, useContext, useState} from 'react';
 import {http} from '../service/http/http';
-import {AxiosResponse} from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//TODO: this needs rework
+export interface UserInterface {
+  id: number;
+  name: string;
+  email?: string;
+  friends: UserInterface[];
+}
 
 export interface AuthContextInterface {
+  loggedUser: UserInterface | null;
   isLoggedIn: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   login: ({
@@ -30,6 +39,7 @@ const AuthUserContext = createContext<undefined | AuthContextInterface>(
 );
 
 export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
+  const [loggedUser, setLoggedUser] = useState<UserInterface | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   async function login({email, password}: {email: string; password?: string}) {
@@ -70,6 +80,7 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
     try {
       const response = await http.get('/home');
       if (response.data.user) {
+        setLoggedUser(response.data.user);
         setIsLoggedIn(true);
       }
       return response;
@@ -80,7 +91,14 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
 
   return (
     <AuthUserContext.Provider
-      value={{isLoggedIn, setIsLoggedIn, login, signup, silentLogin}}>
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        login,
+        signup,
+        silentLogin,
+        loggedUser,
+      }}>
       {children}
     </AuthUserContext.Provider>
   );

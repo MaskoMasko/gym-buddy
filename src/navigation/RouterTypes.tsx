@@ -21,6 +21,18 @@ export type AuthStackParamList = {
   SignUpScreen: {email: string} | undefined;
 };
 
+export type RootStackParamList = {
+  AddFriendsScreen: undefined;
+  RootBottomTab: undefined;
+  DirectMessagesScreen: {userName: string};
+  ProfileScreen: undefined;
+};
+
+export type RootStackNavigationProps<T extends keyof RootStackParamList> = {
+  navigation: StackNavigationProp<RootStackParamList, T>;
+  route: RouteProp<RootStackParamList, T>;
+};
+
 export type RootBottomTabNavigationProps<
   T extends keyof RootBottomTabParamList,
 > = {

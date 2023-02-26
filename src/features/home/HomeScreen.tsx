@@ -1,16 +1,32 @@
-import React, {useState} from 'react';
-import MapView, {Marker} from 'react-native-maps';
-import {View} from '../../components/View';
-import {Screen} from '../../components/Screen';
 import Geolocation from '@react-native-community/geolocation';
-import {Icon} from '../../svg/icons/Icon';
-import {colors} from '../../style/palette';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
+import {useQuery} from 'react-query';
+import {Screen} from '../../components/Screen';
+import {Text} from '../../components/Text';
+import {View} from '../../components/View';
+import {http} from '../../service/http/http';
+import {colors} from '../../style/palette';
+import {Icon} from '../../svg/icons/Icon';
 import {SocialBarHeader} from './SocialBarHeader';
 
 export const dropdownToggleButtonHeight = 25;
 export const HomeScreen = () => {
   const [socialHeaderHeight, setSocialHeaderHeight] = useState(0);
+  const fetchGymLocations = async () => {
+    try {
+      const response = await http.get('/gym-locations');
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const {data, isLoading, isIdle, isError} = useQuery(
+    ['gym-locations'],
+    fetchGymLocations,
+  );
+
   const [currentLocation, setCurrentLocation] = useState<
     | {
         latitude: number;
@@ -24,8 +40,23 @@ export const HomeScreen = () => {
       longitude: info.coords.longitude,
     });
   });
+  if (isLoading || isIdle) {
+    return (
+      <Screen>
+        <Text>loading...</Text>
+      </Screen>
+    );
+  }
+  if (isError) {
+    return (
+      <Screen>
+        <Text>Error...</Text>
+      </Screen>
+    );
+  }
+  const gymLocationList = data?.data;
   return (
-    <Screen>
+    <Screen preventScroll>
       <View flex backgroundColorSuccess style={styles.fullScreenAbsolute}>
         {currentLocation && (
           <MapView
@@ -38,8 +69,21 @@ export const HomeScreen = () => {
               longitudeDelta: 0.4421,
             }}>
             <Marker coordinate={currentLocation} title="Your location">
-              <Icon name="map-marker" size={35} color={colors.error} />
+              <Icon name="map-marker" size={35} color={colors.success} />
             </Marker>
+            {gymLocationList.map((location: any) => {
+              return (
+                <Marker
+                  key={location.id}
+                  coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }}
+                  title={location.name}>
+                  <Icon name="map-marker" size={35} color={colors.error} />
+                </Marker>
+              );
+            })}
           </MapView>
         )}
       </View>

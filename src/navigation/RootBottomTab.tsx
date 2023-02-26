@@ -3,7 +3,7 @@ import React from 'react';
 import {Header} from '../components/Header';
 import {BlogsScreen} from '../features/fitness-news/BlogsScreen';
 import {HomeScreen} from '../features/home/HomeScreen';
-import {MessagesScreen} from '../features/messages/MessagesScreen';
+import {MessagesScreen} from '../features/socials/MessagesScreen';
 import {StatisticsScreen} from '../features/statistics/StatisticsScreen';
 import {WorkoutsScreen} from '../features/workout-sessions/WorkoutsScreen';
 import {RootBottomTabParamList, TabBarIconProps} from './RouterTypes';
