@@ -26,7 +26,7 @@ export const MessagesScreen = () => {
   return (
     <Screen withoutTopInsets queryStatus={{loading, error}}>
       <View>
-        {data.map((roomInfo: any) => {
+        {data.map(roomInfo => {
           return (
             <TouchableOpacity
               key={roomInfo.id}

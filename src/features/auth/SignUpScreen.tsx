@@ -63,6 +63,11 @@ export const SignUpScreen = ({
                     {email}
                   </Text>
                 </Text>
+                {validationErrors.email && (
+                  <Text colorRed extraSmall>
+                    {validationErrors.email}
+                  </Text>
+                )}
               </>
             ) : (
               <>

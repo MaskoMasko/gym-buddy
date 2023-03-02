@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {Text} from '../../components/Text';
 import {View} from '../../components/View';
-import useAuth, {UserInterface} from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import {colors} from '../../style/palette';
 import {useAddFriend} from './fetch/useAddFriend';
-import {StyleSheet} from 'react-native';
 import {useCreateRoom} from './fetch/useCreateRoom';
+import {UserListItemType} from './fetch/useUsersList';
 
-export const FriendListItem = ({user}: {user: UserInterface}) => {
+export const FriendListItem = ({user}: {user: UserListItemType}) => {
   const {loggedUser} = useAuth();
   const [isFriendWith, setIsFriendWith] = useState(
     !!loggedUser?.friends.find(friend => friend.id === user.id),

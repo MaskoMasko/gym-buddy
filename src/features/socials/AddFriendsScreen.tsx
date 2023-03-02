@@ -25,7 +25,7 @@ export const AddFriendsScreen = () => {
             : 'You have 0 friends... Add Friends!'}
         </Text>
         <View>
-          {usersList.data.map((user: any) => {
+          {usersList.queryData.map(user => {
             return <FriendListItem key={user.id} user={user} />;
           })}
         </View>
