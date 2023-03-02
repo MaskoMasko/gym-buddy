@@ -48,7 +48,11 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
     try {
       const response = await http.post('/login', data);
       console.log(response);
-      await AsyncStorage.setItem('token', response.data.user.token);
+      await AsyncStorage.setItem('token', response.data.user.accessToken);
+      await AsyncStorage.setItem(
+        'refreshToken',
+        response.data.user.refreshToken,
+      );
       return response;
     } catch (error) {
       console.log(error);
@@ -79,7 +83,17 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
   async function silentLogin() {
     try {
       const response = await http.get('/home');
-      if (response.data.user) {
+      //ah jes.. try to understand losers :)
+      if (response.data.message) {
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
+        const refreshTokenResponse = await http.post('/refresh-token', {
+          token: refreshToken,
+        });
+        if (refreshTokenResponse.data.user) {
+          setLoggedUser(response.data.user);
+          setIsLoggedIn(true);
+        }
+      } else if (response.data.user) {
         setLoggedUser(response.data.user);
         setIsLoggedIn(true);
       }
