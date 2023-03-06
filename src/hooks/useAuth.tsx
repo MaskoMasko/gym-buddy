@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AxiosResponse} from 'axios';
 import React, {createContext, useContext, useState} from 'react';
 import {http} from '../service/http/http';
-import {err} from 'react-native-svg/lib/typescript/xml';
 
 //TODO: this needs rework
 export interface Message {
