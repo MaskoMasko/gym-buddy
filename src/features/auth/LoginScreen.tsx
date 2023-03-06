@@ -33,7 +33,7 @@ export const LoginScreen = ({
   const {email, username} = route.params;
   const {setIsLoggedIn, login} = useAuth();
   const [formData, setFormData] = useState({
-    email: email,
+    email,
     password: 'test1234',
   });
   const [validationErrors, setValidationErrors] = useState<Record<any, any>>(

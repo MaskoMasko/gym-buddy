@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Router} from './src/navigation/Router';
 import {AuthUserProvider} from './src/hooks/useAuth';
-import {QueryClientProvider} from './src/service/http/react-query/queryClient';
+import {QueryClientProvider} from './src/service/react-query/queryClient';
 import {Screen} from './src/components/Screen';
 import {View} from './src/components/View';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,7 +17,8 @@ function AppEntry() {
   const [initialState, setInitialState] = useState();
 
   useEffect(() => {
-    const shouldPersistNavigation = true;
+    // toggle to see results
+    const shouldPersistNavigation = false;
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();

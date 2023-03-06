@@ -1,6 +1,6 @@
 import {useMutation} from 'react-query';
 import {http} from '../../../service/http/http';
-import {client} from '../../../service/http/react-query/queryClient';
+import {client} from '../../../service/react-query/queryClient';
 import {z} from 'zod';
 import {useState} from 'react';
 

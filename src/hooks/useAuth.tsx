@@ -2,13 +2,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AxiosResponse} from 'axios';
 import React, {createContext, useContext, useState} from 'react';
 import {http} from '../service/http/http';
+import {err} from 'react-native-svg/lib/typescript/xml';
 
 //TODO: this needs rework
+export interface Message {
+  id: number;
+  text: string;
+  createdAt: string;
+  senderId: number;
+  chatRoomId: number;
+  userId: null | number;
+}
+
 export interface UserInterface {
   id: number;
   name: string;
   email?: string;
   friends: UserInterface[];
+  chatRooms: {
+    id: number;
+    name: string;
+    messages: Message[];
+  }[];
 }
 
 export interface AuthContextInterface {
@@ -42,17 +57,18 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
   const [loggedUser, setLoggedUser] = useState<UserInterface | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  async function login({email, password}: {email: string; password?: string}) {
-    const data = password ? {email, password} : {email};
+  async function login(data: {email: string; password?: string}) {
     await AsyncStorage.clear();
     try {
       const response = await http.post('/login', data);
-      console.log(response);
       await AsyncStorage.setItem('token', response.data.user.accessToken);
-      await AsyncStorage.setItem(
-        'refreshToken',
-        response.data.user.refreshToken,
-      );
+      if (response.data.user.refreshToken) {
+        await AsyncStorage.setItem(
+          'refreshToken',
+          response.data.user.refreshToken,
+        );
+        setLoggedUser(response.data.user);
+      }
       return response;
     } catch (error) {
       console.log(error);
@@ -71,7 +87,6 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
     await AsyncStorage.clear();
     try {
       const response = await http.post('/signup', data);
-      console.log(response);
       if (response.data.user) {
         await AsyncStorage.setItem('token', response.data.user.token);
       }
@@ -82,22 +97,24 @@ export const AuthUserProvider = ({children}: {children: React.ReactNode}) => {
   }
   async function silentLogin() {
     try {
-      const response = await http.get('/home');
-      //ah jes.. try to understand losers :)
-      if (response.data.message) {
-        const refreshToken = await AsyncStorage.getItem('refreshToken');
-        const refreshTokenResponse = await http.post('/refresh-token', {
-          token: refreshToken,
-        });
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      const refreshTokenResponse = await http.post('/refresh-token', {
+        token: refreshToken,
+      });
+      await AsyncStorage.setItem(
+        'token',
+        refreshTokenResponse.data.user.accessToken,
+      );
+      try {
+        const response = await http.get('/home');
         if (refreshTokenResponse.data.user) {
           setLoggedUser(response.data.user);
           setIsLoggedIn(true);
         }
-      } else if (response.data.user) {
-        setLoggedUser(response.data.user);
-        setIsLoggedIn(true);
+        return response;
+      } catch (error) {
+        console.log(error);
       }
-      return response;
     } catch (error) {
       console.log(error);
     }
