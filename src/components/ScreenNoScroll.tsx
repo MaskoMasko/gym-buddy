@@ -1,10 +1,11 @@
 import React from 'react';
-import {KeyboardAvoidingView, ScrollView, StyleSheet} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ErrorView} from './ErrorView';
 import {LoadingView} from './LoadingView';
+import {View} from './View';
 
-interface ScreenProps {
+interface ScreenNoScrollProps {
   children: React.ReactNode;
   preventScroll?: boolean;
   queryStatus?: {
@@ -27,29 +28,26 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Screen = ({
+export const ScreenNoScroll = ({
   children,
-  preventScroll,
   queryStatus,
-  withBottomInsets,
   withTopInsets,
-}: ScreenProps) => {
+  withBottomInsets,
+}: ScreenNoScrollProps) => {
   const insets = useSafeAreaInsets();
   return (
     <KeyboardAvoidingView
       style={styles.container}
       keyboardVerticalOffset={-(insets.bottom + insets.top)}
       behavior={'padding'}>
-      <ScrollView
-        contentContainerStyle={[
+      <View
+        style={[
           styles.flexGrow,
           {
             paddingTop: withTopInsets ? insets.top : 0,
             paddingBottom: withBottomInsets ? insets.bottom : 0,
           },
-        ]}
-        keyboardShouldPersistTaps={'never'}
-        bounces={!preventScroll}>
+        ]}>
         {queryStatus?.loading ? (
           <LoadingView />
         ) : queryStatus?.error ? (
@@ -57,7 +55,7 @@ export const Screen = ({
         ) : (
           <>{children}</>
         )}
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };

@@ -24,7 +24,7 @@ export const OrDivider = ({fontSize, title = 'or'}: OrDividerProps) => {
     }
   }
   return (
-    <View flexDirectionRow justifyContentSpaceEvenly marginHorizontalMedium>
+    <View flexDirectionRow justifyContentSpaceEvenly paddingHorizontalMedium>
       <View
         flex
         style={{

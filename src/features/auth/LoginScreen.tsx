@@ -53,21 +53,23 @@ export const LoginScreen = ({
           style={{fontSize: sizes.medium * 2, paddingLeft: sizes.large}}>
           Login
         </Text>
-        <View marginSmall style={styles.backgroundLightDarkContainer}>
-          <View marginVerticalMedium marginHorizontalExtraLarge>
-            <View flex flexDirectionRow marginVerticalSmall>
-              <Image
-                source={require('../../assets/images/default-profile-img.png')}
-                style={styles.userProfileImage}
-              />
-              <Spacer small />
-              <View>
-                <Text extraSmall weightSemibold colorWhite>
-                  {username}
-                </Text>
-                <Text extraSmall colorWhite>
-                  {email}
-                </Text>
+        <View paddingSmall style={styles.backgroundLightDarkContainer}>
+          <View paddingVerticalMedium paddingHorizontalExtraLarge>
+            <View style={{padding: sizes.medium}}>
+              <View flex flexDirectionRow paddingVerticalSmall>
+                <Image
+                  source={require('../../assets/images/default-profile-img.png')}
+                  style={styles.userProfileImage}
+                />
+                <Spacer small />
+                <View>
+                  <Text extraSmall weightSemibold colorWhite>
+                    {username}
+                  </Text>
+                  <Text extraSmall colorWhite>
+                    {email}
+                  </Text>
+                </View>
               </View>
             </View>
             <TextInput

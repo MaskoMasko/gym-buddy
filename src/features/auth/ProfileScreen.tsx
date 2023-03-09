@@ -27,21 +27,21 @@ export const ProfileScreen = () => {
       <View
         backgroundColorLight
         centerContent
-        marginLarge
+        paddingLarge
         style={{height: '30%'}}>
-        <View backgroundColorWhite marginExtraLarge style={{borderRadius: 50}}>
+        <View backgroundColorWhite paddingExtraLarge style={{borderRadius: 50}}>
           <Image
             source={require('../../assets/images/default-profile-img.png')}
             style={{width: 50, height: 50}}
           />
         </View>
-        <View marginMedium>
+        <View paddingMedium>
           <Text extraLarge colorLightGray>
             Massimo Persic
           </Text>
         </View>
       </View>
-      <View marginVerticalExtraLarge marginHorizontalLarge>
+      <View paddingVerticalExtraLarge paddingHorizontalLarge>
         <Text large weightBold>
           About me
         </Text>
@@ -74,7 +74,7 @@ export const ProfileScreen = () => {
         <View
           flexDirectionRow
           justifyContentSpaceAround
-          marginVerticalExtraLarge>
+          paddingVerticalExtraLarge>
           {optionsData.map(item => {
             return (
               <View centerContent flex key={item.text}>

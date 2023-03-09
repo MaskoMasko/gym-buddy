@@ -33,10 +33,10 @@ export const HomeScreen = () => {
     <Screen
       preventScroll
       queryStatus={{loading: gymLocations.loading, error: gymLocations.error}}>
-      <View flex backgroundColorSuccess style={styles.fullScreenAbsolute}>
+      <View flex backgroundColorError>
         {currentLocation && (
           <MapView
-            style={styles.flex}
+            style={{flex: 1}}
             initialRegion={{
               latitude: currentLocation.latitude,
               longitude: currentLocation.longitude,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   fullScreenAbsolute: {
     position: 'absolute',
     width: '100%',
-    aspectRatio: 2 / 4,
+    aspectRatio: 1,
     bottom: 1,
   },
   flex: {

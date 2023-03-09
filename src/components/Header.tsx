@@ -40,6 +40,7 @@ export const Header = ({navigation, options, ...props}: HeaderProps) => {
       style={styles.headerContainer}
       flexDirectionRow
       centerContent
+      paddingMedium
       {...props}>
       {!canGoBack && !shouldRenderLogo ? null : (
         <TouchableOpacity
@@ -49,6 +50,7 @@ export const Header = ({navigation, options, ...props}: HeaderProps) => {
           onPress={canGoBack ? navigation.goBack : undefined}
           flex
           centerContent
+          paddingMedium
           style={styles.absoluteTopLeft}>
           {shouldRenderLogo ? (
             <Image
@@ -74,8 +76,6 @@ const useStyles = () => {
   return StyleSheet.create({
     headerContainer: {
       paddingTop: insets.top + sizes.small,
-      marginBottom: 15,
-      marginHorizontal: 15,
     },
     absoluteTopLeft: {
       position: 'absolute',

@@ -30,12 +30,12 @@ export const WelcomeScreen = () => {
   const {login} = useAuth();
 
   return (
-    <Screen preventScroll>
+    <Screen>
       <ImageBackground
         source={require('../../assets/images/login-background.jpg')}
         style={styles.image}
       />
-      <View justifyContentCenter flex>
+      <View centerContent flex>
         <Text
           colorWhite
           weightMedium
@@ -43,8 +43,8 @@ export const WelcomeScreen = () => {
           alignSelfCenter>
           Welcome to GymBuddy!
         </Text>
-        <View marginSmall style={styles.backgroundLightDarkContainer}>
-          <View marginVerticalMedium marginHorizontalExtraLarge>
+        <View paddingSmall style={styles.backgroundLightDarkContainer}>
+          <View paddingVerticalMedium paddingHorizontalExtraLarge>
             <TextInput
               label={'Email'}
               value={formData.email}
@@ -98,7 +98,7 @@ export const WelcomeScreen = () => {
               Continue
             </Button>
             <OrDivider />
-            <View marginVerticalSmall>
+            <View paddingVerticalSmall>
               <Button rightIconName={'google'} light>
                 Continue with Google
               </Button>

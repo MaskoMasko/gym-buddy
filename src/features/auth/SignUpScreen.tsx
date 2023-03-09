@@ -50,8 +50,8 @@ export const SignUpScreen = ({
           style={{fontSize: sizes.medium * 2, paddingLeft: sizes.large}}>
           Sign up
         </Text>
-        <View marginSmall style={styles.backgroundLightDarkContainer}>
-          <View marginVerticalMedium marginHorizontalExtraLarge>
+        <View paddingSmall style={styles.backgroundLightDarkContainer}>
+          <View paddingVerticalMedium paddingHorizontalExtraLarge>
             {isEmail ? (
               <>
                 <Text colorWhite extraSmall>
@@ -145,7 +145,7 @@ export const SignUpScreen = ({
                 {validationErrors.password}
               </Text>
             )}
-            <View marginVerticalSmall>
+            <View paddingVerticalSmall>
               <Text colorWhite extraSmall>
                 By selecting Agree and continue below, I agree to{' '}
                 <Text colorWhite extraSmall weightSemibold>

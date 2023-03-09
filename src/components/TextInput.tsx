@@ -54,7 +54,7 @@ export const TextInput = ({
         </Text>
       )}
       <RNTextInput
-        style={[styles.textContainer, styles.textInputPaddingTop]}
+        style={[styles.textContainer, styles.textInputPaddingTop, props.style]}
         placeholder={placeholder ?? label}
         secureTextEntry={!isPasswordVisible}
         {...props}

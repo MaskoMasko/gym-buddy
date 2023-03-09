@@ -33,12 +33,12 @@ export const SocialBarHeader = () => {
       }}
       style={animatedStyle}>
       <View flexDirectionRow centerContent style={styles.headerContainer}>
-        <View flex marginSmall>
+        <View flex paddingSmall>
           <TextInput label={'Search places'} />
         </View>
         <TouchableOpacity
           backgroundColorLight
-          marginSmall
+          paddingSmall
           style={styles.headerIcon}
           centerContent
           activeOpacity={0.7}

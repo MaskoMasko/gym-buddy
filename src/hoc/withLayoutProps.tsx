@@ -4,23 +4,23 @@ import {sizes} from '../style/componentConstants';
 import {colors} from '../style/palette';
 
 export interface LayoutProps {
-  marginExtraSmall?: boolean;
-  marginSmall?: boolean;
-  marginMedium?: boolean;
-  marginLarge?: boolean;
-  marginExtraLarge?: boolean;
+  paddingExtraSmall?: boolean;
+  paddingSmall?: boolean;
+  paddingMedium?: boolean;
+  paddingLarge?: boolean;
+  paddingExtraLarge?: boolean;
 
-  marginVerticalExtraSmall?: boolean;
-  marginVerticalSmall?: boolean;
-  marginVerticalMedium?: boolean;
-  marginVerticalLarge?: boolean;
-  marginVerticalExtraLarge?: boolean;
+  paddingVerticalExtraSmall?: boolean;
+  paddingVerticalSmall?: boolean;
+  paddingVerticalMedium?: boolean;
+  paddingVerticalLarge?: boolean;
+  paddingVerticalExtraLarge?: boolean;
 
-  marginHorizontalExtraSmall?: boolean;
-  marginHorizontalSmall?: boolean;
-  marginHorizontalMedium?: boolean;
-  marginHorizontalLarge?: boolean;
-  marginHorizontalExtraLarge?: boolean;
+  paddingHorizontalExtraSmall?: boolean;
+  paddingHorizontalSmall?: boolean;
+  paddingHorizontalMedium?: boolean;
+  paddingHorizontalLarge?: boolean;
+  paddingHorizontalExtraLarge?: boolean;
 
   backgroundColorTheme?: boolean;
   backgroundColorError?: boolean;
@@ -82,23 +82,23 @@ export function withLayoutProps<T extends {style?: any}>(
       {
         style: customStyle,
 
-        marginExtraSmall,
-        marginSmall,
-        marginMedium,
-        marginLarge,
-        marginExtraLarge,
+        paddingExtraSmall,
+        paddingSmall,
+        paddingMedium,
+        paddingLarge,
+        paddingExtraLarge,
 
-        marginVerticalExtraSmall,
-        marginVerticalSmall,
-        marginVerticalMedium,
-        marginVerticalLarge,
-        marginVerticalExtraLarge,
+        paddingVerticalExtraSmall,
+        paddingVerticalSmall,
+        paddingVerticalMedium,
+        paddingVerticalLarge,
+        paddingVerticalExtraLarge,
 
-        marginHorizontalExtraSmall,
-        marginHorizontalSmall,
-        marginHorizontalMedium,
-        marginHorizontalLarge,
-        marginHorizontalExtraLarge,
+        paddingHorizontalExtraSmall,
+        paddingHorizontalSmall,
+        paddingHorizontalMedium,
+        paddingHorizontalLarge,
+        paddingHorizontalExtraLarge,
 
         backgroundColorTheme,
         backgroundColorError,
@@ -289,58 +289,58 @@ export function withLayoutProps<T extends {style?: any}>(
           return undefined;
         }
       }
-      function resolveMargin() {
+      function resolvePadding() {
         const style: ViewStyle = {};
-        if (marginExtraSmall) {
-          style.margin = sizes.extraSmall;
+        if (paddingExtraSmall) {
+          style.padding = sizes.extraSmall;
         }
-        if (marginSmall) {
-          style.margin = sizes.small;
+        if (paddingSmall) {
+          style.padding = sizes.small;
         }
-        if (marginLarge) {
-          style.margin = sizes.large;
+        if (paddingLarge) {
+          style.padding = sizes.large;
         }
-        if (marginExtraLarge) {
-          style.margin = sizes.extraLarge;
+        if (paddingExtraLarge) {
+          style.padding = sizes.extraLarge;
         }
-        if (marginMedium) {
-          style.margin = sizes.medium;
+        if (paddingMedium) {
+          style.padding = sizes.medium;
         }
-        if (marginVerticalExtraSmall) {
-          style.marginVertical = sizes.extraSmall;
+        if (paddingVerticalExtraSmall) {
+          style.paddingVertical = sizes.extraSmall;
         }
-        if (marginVerticalSmall) {
-          style.marginVertical = sizes.small;
+        if (paddingVerticalSmall) {
+          style.paddingVertical = sizes.small;
         }
-        if (marginVerticalLarge) {
-          style.marginVertical = sizes.large;
+        if (paddingVerticalLarge) {
+          style.paddingVertical = sizes.large;
         }
-        if (marginVerticalExtraLarge) {
-          style.marginVertical = sizes.extraLarge;
+        if (paddingVerticalExtraLarge) {
+          style.paddingVertical = sizes.extraLarge;
         }
-        if (marginVerticalMedium) {
-          style.marginVertical = sizes.medium;
+        if (paddingVerticalMedium) {
+          style.paddingVertical = sizes.medium;
         }
-        if (marginHorizontalExtraSmall) {
-          style.marginHorizontal = sizes.extraSmall;
+        if (paddingHorizontalExtraSmall) {
+          style.paddingHorizontal = sizes.extraSmall;
         }
-        if (marginHorizontalSmall) {
-          style.marginHorizontal = sizes.small;
+        if (paddingHorizontalSmall) {
+          style.paddingHorizontal = sizes.small;
         }
-        if (marginHorizontalLarge) {
-          style.marginHorizontal = sizes.large;
+        if (paddingHorizontalLarge) {
+          style.paddingHorizontal = sizes.large;
         }
-        if (marginHorizontalExtraLarge) {
-          style.marginHorizontal = sizes.extraLarge;
+        if (paddingHorizontalExtraLarge) {
+          style.paddingHorizontal = sizes.extraLarge;
         }
-        if (marginHorizontalMedium) {
-          style.marginHorizontal = sizes.medium;
+        if (paddingHorizontalMedium) {
+          style.paddingHorizontal = sizes.medium;
         }
         return style;
       }
       const style: ViewStyle = {
         ...resolveFlexing(),
-        ...resolveMargin(),
+        ...resolvePadding(),
         backgroundColor: resolveBackgroundColor(),
       };
       return (
@@ -349,7 +349,7 @@ export function withLayoutProps<T extends {style?: any}>(
         //Understandable, have a nice day
         <Component
           ref={ref}
-          {...(otherProps as any)}
+          {...(otherProps as T & LayoutProps)}
           style={[style, customStyle]}
         />
       );

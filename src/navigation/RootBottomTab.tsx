@@ -1,16 +1,16 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {Header} from '../components/Header';
+import {View} from '../components/View';
 import {BlogsScreen} from '../features/fitness-news/BlogsScreen';
 import {HomeScreen} from '../features/home/HomeScreen';
 import {MessagesScreen} from '../features/socials/MessagesScreen';
 import {StatisticsScreen} from '../features/statistics/StatisticsScreen';
 import {WorkoutsScreen} from '../features/workout-sessions/WorkoutsScreen';
-import {RootBottomTabParamList, TabBarIconProps} from './RouterTypes';
-import {Icon} from '../svg/icons/Icon';
 import {colors} from '../style/palette';
-import {View} from '../components/View';
-import {StyleSheet} from 'react-native';
+import {Icon} from '../svg/icons/Icon';
+import {RootBottomTabParamList, TabBarIconProps} from './RouterTypes';
 
 export const RootBottomTab = () => {
   const Tab = createBottomTabNavigator<RootBottomTabParamList>();
