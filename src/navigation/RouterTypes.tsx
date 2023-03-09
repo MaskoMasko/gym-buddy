@@ -24,7 +24,7 @@ export type AuthStackParamList = {
 export type RootStackParamList = {
   AddFriendsScreen: undefined;
   RootBottomTab: undefined;
-  DirectMessagesScreen: {userName: string};
+  DirectMessagesScreen: {roomName: string; roomId: number};
   ProfileScreen: undefined;
 };
 

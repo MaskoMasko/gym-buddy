@@ -5,8 +5,8 @@ import {z} from 'zod';
 import {useState} from 'react';
 
 const AddFriendSchema = z.object({
-  userId: z.number(),
-  friendId: z.number(),
+  userId: z.number().optional(),
+  friendId: z.number().optional(),
 });
 
 type AddFriendType = z.infer<typeof AddFriendSchema>;

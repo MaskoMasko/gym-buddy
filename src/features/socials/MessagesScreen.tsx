@@ -32,19 +32,20 @@ export const MessagesScreen = () => {
               key={roomInfo.id}
               backgroundColorDisabled
               activeOpacity={0.7}
-              marginVerticalExtraSmall
-              marginHorizontalSmall
+              paddingVerticalExtraSmall
+              paddingHorizontalSmall
               style={styles.paddingVertical}
               onPress={() =>
                 navigation.navigate('DirectMessagesScreen', {
-                  userName: 'Massimo Persic',
+                  roomName: roomInfo.name,
+                  roomId: roomInfo.id,
                 })
               }>
               <View flexDirectionRow>
                 <TouchableOpacity
                   onPress={() => navigation.navigate('ProfileScreen')}
                   style={styles.borderRadius}
-                  marginSmall
+                  paddingSmall
                   backgroundColorWhite>
                   <Image
                     source={require('../../assets/images/default-profile-img.png')}

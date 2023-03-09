@@ -2,10 +2,25 @@ import {useState} from 'react';
 import {useMutation} from 'react-query';
 import {z} from 'zod';
 import {http} from '../../../service/http/http';
-import {client} from '../../../service/http/react-query/queryClient';
+import {client} from '../../../service/react-query/queryClient';
 
 const CreateRoomSchema = z.object({
-  message: z.string(),
+  id: z.number(),
+  name: z.string(),
+  participants: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      email: z.string(),
+      //TODO: remove this on backend
+      emailVerified: z.boolean(),
+      password: z.string(),
+      accessToken: z.string(),
+      refreshToken: z.string().nullable(),
+      chatRoomId: z.number(),
+      userId: z.null(),
+    }),
+  ),
 });
 
 type CreateRoomType = z.infer<typeof CreateRoomSchema>;
@@ -17,18 +32,18 @@ export const useCreateRoom = () => {
   const _createRoom = async ({
     user1Id,
     user2Id,
-  }: // roomName,
-  {
+    roomName,
+  }: {
     user1Id: number;
     user2Id: number;
-    // roomName: string;
+    roomName: string;
   }) => {
     const response = await http.post('/create-room', {
       user1Id,
       user2Id,
-      roomName: 'Direct Messages',
+      roomName,
     });
-    const parse = CreateRoomSchema.safeParse(response.data);
+    const parse = CreateRoomSchema.safeParse(response.data.data);
     if (parse.success) {
       return response.data;
     } else {
