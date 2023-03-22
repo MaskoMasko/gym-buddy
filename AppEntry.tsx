@@ -7,6 +7,7 @@ import {Screen} from './src/components/Screen';
 import {View} from './src/components/View';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityIndicator, Linking, Platform} from 'react-native';
+import './src/utils/atArray';
 
 function AppEntry() {
   const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_PERSISTENCE';
@@ -18,7 +19,7 @@ function AppEntry() {
 
   useEffect(() => {
     // toggle to see results
-    const shouldPersistNavigation = false;
+    const shouldPersistNavigation = true;
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();
