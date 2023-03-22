@@ -24,7 +24,7 @@ export const MessagesScreen = () => {
     }, []),
   );
   return (
-    <Screen withoutTopInsets queryStatus={{loading, error}}>
+    <Screen queryStatus={{loading, error}}>
       <View>
         {data.map(roomInfo => {
           return (
