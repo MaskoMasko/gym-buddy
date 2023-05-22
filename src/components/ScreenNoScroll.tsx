@@ -4,7 +4,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ErrorView} from './ErrorView';
 import {LoadingView} from './LoadingView';
 import {View} from './View';
-import {useHeaderHeight} from '@react-navigation/elements';
+// import {useHeaderHeight} from '@react-navigation/elements';
 
 interface ScreenNoScrollProps {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ export const ScreenNoScroll = ({
   withBottomInsets,
 }: ScreenNoScrollProps) => {
   const insets = useSafeAreaInsets();
-  const headerHeight = useHeaderHeight();
+  // const headerHeight = useHeaderHeight();
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -47,8 +47,7 @@ export const ScreenNoScroll = ({
           styles.flexGrow,
           {
             paddingTop: withTopInsets ? insets.top : 0,
-            //                            this needs to get fixed
-            paddingBottom: withBottomInsets ? headerHeight : 0,
+            paddingBottom: withBottomInsets ? insets.bottom : 0,
           },
         ]}>
         {queryStatus?.loading ? (
