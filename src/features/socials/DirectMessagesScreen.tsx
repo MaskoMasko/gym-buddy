@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {FlatList, Image, StyleSheet} from 'react-native';
 import {Text} from '../../components/Text';
 import {View} from '../../components/View';
@@ -12,6 +12,9 @@ import {useSendMessage} from './fetch/useSendMessage';
 import {colors} from '../../style/palette';
 import {ScreenNoScroll} from '../../components/ScreenNoScroll';
 import {Spacer} from '../../components/Spacer';
+// import socket from '../../utils/socket';
+import {useSocket} from '../../hooks/useSocket';
+import {client} from '../../service/react-query/queryClient';
 
 const defaultImage = require('../../assets/images/default-profile-img.png');
 
@@ -30,6 +33,20 @@ export const DirectMessagesScreen = () => {
   const messages = useMessages(params.roomId).store.messagesList;
   const {loggedUser} = useAuth();
   const {sendMessage, error, loading} = useSendMessage();
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('connect', () => console.log('Socket connected'));
+      socket.on('disconnect', () => console.log('Socket disconnected'));
+      socket.on('error', err => console.log('Socket error:', err));
+      // socket.on('greeting', () => console.log('im here'));
+      socket.on('greeting', async () => {
+        await client.invalidateQueries(['user']);
+      });
+    }
+  }, [socket]);
+
   return (
     <ScreenNoScroll withBottomInsets queryStatus={{error, loading}}>
       <FlatList
@@ -79,6 +96,11 @@ export const DirectMessagesScreen = () => {
         <View paddingVerticalSmall>
           <Button
             onPress={async () => {
+              socket?.emit('message', {
+                text: messageText,
+                senderId: loggedUser?.id,
+                chatRoomId: params.roomId,
+              });
               await sendMessage({roomId: params.roomId, message: messageText});
             }}>
             Send

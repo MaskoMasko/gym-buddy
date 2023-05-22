@@ -1,7 +1,7 @@
 import {http} from '../../../service/http/http';
 import useAuth from '../../../hooks/useAuth';
 import {useMutation} from 'react-query';
-import {client} from '../../../service/react-query/queryClient';
+// import {client} from '../../../service/react-query/queryClient';
 
 export const useSendMessage = () => {
   const {loggedUser} = useAuth();
@@ -24,9 +24,9 @@ export const useSendMessage = () => {
     isLoading,
     isError,
   } = useMutation(['sent-message'], _sendMessage, {
-    async onSuccess() {
-      await client.invalidateQueries(['user']);
-    },
+    // async onSuccess() {
+    //   await client.invalidateQueries(['user']);
+    // },
   });
 
   return {
