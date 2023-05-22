@@ -10,20 +10,16 @@ if (!Array.prototype.at) {
     const array = Object(this);
     //check if array.length is non-negative integer
     const length = array.length >>> 0;
-
     if (!index) {
       return array[0];
     }
-
     if (index >= 0 && index < length) {
       return array[index];
     }
-
     const k = index < 0 ? length + index : index;
     if (k >= 0 && k < length) {
       return array[k];
     }
-
     return undefined;
   };
 }

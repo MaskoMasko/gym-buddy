@@ -39,6 +39,7 @@ export const useUsersList = () => {
     queryData: (query.data?.data ?? []) as UserListItemType[],
     loading: query.isLoading || query.isIdle,
     error: query.isError || zodError,
+    //TODO: change this to: useQuery(['users-list'])
     store: userListStore,
   };
 };

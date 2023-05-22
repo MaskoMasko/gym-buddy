@@ -1,14 +1,54 @@
 import React from 'react';
-import {Screen} from '../../components/Screen';
-import {View} from '../../components/View';
+import {Pressable, ScrollView, StyleSheet} from 'react-native';
+import {ImageTransition} from '../../components/ImageTransition';
+import {ScreenNoScroll} from '../../components/ScreenNoScroll';
 import {Text} from '../../components/Text';
+import {View} from '../../components/View';
+import {useWorkoutCategories} from './fetch/useWorkoutCategories';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackNavigationProps} from '../../navigation/RouterTypes';
+import _ from 'lodash';
 
 export const WorkoutsScreen = () => {
+  const navigation =
+    useNavigation<
+      RootStackNavigationProps<'WorkoutDetailsScreen'>['navigation']
+    >();
+  const {
+    queryData: workoutCategoriesList,
+    loading,
+    error,
+  } = useWorkoutCategories();
   return (
-    <Screen>
-      <View>
-        <Text>This si workouts screen!</Text>
+    <ScreenNoScroll queryStatus={{loading, error}}>
+      <View paddingLarge>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {workoutCategoriesList.map(workout => {
+            return (
+              <Pressable
+                key={workout.category}
+                onPress={() =>
+                  navigation.navigate('WorkoutDetailsScreen', {
+                    workoutCategory:
+                      _.capitalize(workout.category) + ' workout',
+                  })
+                }>
+                <View paddingVerticalExtraSmall style={{position: 'relative'}}>
+                  <ImageTransition source={workout.image} />
+                  <View
+                    paddingMedium
+                    alignItemsCenter
+                    style={StyleSheet.absoluteFillObject}>
+                    <Text colorOffWhite weightSemibold>
+                      {workout.category.toUpperCase()}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
       </View>
-    </Screen>
+    </ScreenNoScroll>
   );
 };

@@ -8,6 +8,7 @@ import {ProfileScreen} from '../features/auth/ProfileScreen';
 import {useNavigation} from '@react-navigation/native';
 import {Image, Pressable} from 'react-native';
 import {Icon} from '../svg/icons/Icon';
+import {WorkoutDetailsScreen} from '../features/workout-sessions/WorkoutDetailsScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -55,6 +56,10 @@ export const RootStack = () => {
       <Stack.Screen
         name="DirectMessagesScreen"
         component={DirectMessagesScreen}
+      />
+      <Stack.Screen
+        name="WorkoutDetailsScreen"
+        component={WorkoutDetailsScreen}
       />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen

@@ -1,14 +1,47 @@
+import axios from 'axios';
 import React from 'react';
-import {Screen} from '../../components/Screen';
-import {View} from '../../components/View';
+import {Image, ScrollView} from 'react-native';
+import {useQuery} from 'react-query';
 import {Text} from '../../components/Text';
+import {View} from '../../components/View';
+import {sizes} from '../../style/componentConstants';
+import {ScreenNoScroll} from '../../components/ScreenNoScroll';
 
 export const BlogsScreen = () => {
+  const {data, isLoading, isError, isIdle} = useQuery('blogs', async () => {
+    const res = await axios.get('http://localhost:4000/blogs');
+    return res.data;
+  });
+  if (isIdle || isLoading) {
+    return <Text>Loading...</Text>;
+  }
+  if (isError) {
+    return <Text>Error...</Text>;
+  }
   return (
-    <Screen>
-      <View>
-        <Text>This is blogs screen</Text>
-      </View>
-    </Screen>
+    <ScreenNoScroll>
+      <ScrollView>
+        {data.data.map((item: any) => {
+          return (
+            <View
+              key={item.id}
+              style={{
+                margin: sizes.large,
+              }}
+              centerContent>
+              <Image
+                source={{uri: item.image}}
+                style={{
+                  width: '95%',
+                  height: 200,
+                  margin: sizes.medium,
+                }}
+              />
+              <Text>{item.title}</Text>
+            </View>
+          );
+        })}
+      </ScrollView>
+    </ScreenNoScroll>
   );
 };

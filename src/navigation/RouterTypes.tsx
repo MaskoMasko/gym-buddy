@@ -25,6 +25,7 @@ export type RootStackParamList = {
   AddFriendsScreen: undefined;
   RootBottomTab: undefined;
   DirectMessagesScreen: {roomName: string; roomId: number};
+  WorkoutDetailsScreen: {workoutCategory: string};
   ProfileScreen: undefined;
 };
 
