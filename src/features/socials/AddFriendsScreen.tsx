@@ -11,8 +11,11 @@ import _ from 'lodash';
 export const AddFriendsScreen = () => {
   const usersList = useUsersList();
   const {loggedUser} = useAuth();
-  const usersThatAreNotFriends =
-    _.differenceBy(usersList.queryData, loggedUser?.friends ?? [], 'id') ?? [];
+  const usersThatAreNotFriends = _.differenceBy(
+    usersList.queryData,
+    [loggedUser, ...(loggedUser?.friends ?? [])],
+    'id',
+  );
   return (
     <Screen
       withTopInsets

@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {FlatList, Image, StyleSheet} from 'react-native';
 import {Text} from '../../components/Text';
 import {View} from '../../components/View';
@@ -12,7 +12,6 @@ import {useSendMessage} from './fetch/useSendMessage';
 import {colors} from '../../style/palette';
 import {ScreenNoScroll} from '../../components/ScreenNoScroll';
 import {Spacer} from '../../components/Spacer';
-// import socket from '../../utils/socket';
 import {useSocket} from '../../hooks/useSocket';
 import {client} from '../../service/react-query/queryClient';
 
@@ -34,13 +33,13 @@ export const DirectMessagesScreen = () => {
   const {loggedUser} = useAuth();
   const {sendMessage, error, loading} = useSendMessage();
   const socket = useSocket();
+  const flatListScrollRef = useRef<null | FlatList>(null);
 
   useEffect(() => {
     if (socket) {
       socket.on('connect', () => console.log('Socket connected'));
       socket.on('disconnect', () => console.log('Socket disconnected'));
       socket.on('error', err => console.log('Socket error:', err));
-      // socket.on('greeting', () => console.log('im here'));
       socket.on('greeting', async () => {
         await client.invalidateQueries(['user']);
       });
@@ -50,11 +49,18 @@ export const DirectMessagesScreen = () => {
   return (
     <ScreenNoScroll withBottomInsets queryStatus={{error, loading}}>
       <FlatList
-        style={{height: '90%'}}
+        ref={flatListScrollRef}
+        style={styles.height90}
         data={messages}
         keyExtractor={message => String(message.id)}
+        onContentSizeChange={() =>
+          flatListScrollRef.current?.scrollToEnd({animated: true})
+        }
         renderItem={({item: message}) => {
           const isYourMessage = Boolean(message.senderId === loggedUser?.id);
+          const messageBackgroundColor = isYourMessage
+            ? '#fafafa'
+            : colors.darkGray;
           return (
             <View
               paddingHorizontalMedium
@@ -70,9 +76,7 @@ export const DirectMessagesScreen = () => {
                   paddingSmall
                   style={[
                     {
-                      backgroundColor: isYourMessage
-                        ? '#fafafa'
-                        : colors.darkGray,
+                      backgroundColor: messageBackgroundColor,
                     },
                     styles.message,
                   ]}>
@@ -102,6 +106,7 @@ export const DirectMessagesScreen = () => {
                 chatRoomId: params.roomId,
               });
               await sendMessage({roomId: params.roomId, message: messageText});
+              setMessageText('');
             }}>
             Send
           </Button>
@@ -130,4 +135,5 @@ const styles = StyleSheet.create({
     elevation: 5,
     maxWidth: '90%',
   },
+  height90: {height: '90%'},
 });

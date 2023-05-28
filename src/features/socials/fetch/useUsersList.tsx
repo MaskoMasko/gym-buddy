@@ -2,7 +2,7 @@ import {useQuery} from 'react-query';
 import {http} from '../../../service/http/http';
 import {z} from 'zod';
 import {useState} from 'react';
-import {create} from 'zustand';
+// import {create} from 'zustand';
 
 const UserListItemSchema = z.object({
   id: z.number(),
@@ -11,23 +11,23 @@ const UserListItemSchema = z.object({
 
 export type UserListItemType = z.infer<typeof UserListItemSchema>;
 
-const _userListStore = create<{
-  userList: UserListItemType[];
-  setUserList: (newUserList: UserListItemType[]) => void;
-}>(set => ({
-  userList: [],
-  setUserList: newUserList => set(() => ({userList: newUserList})),
-}));
+// const _userListStore = create<{
+//   userList: UserListItemType[];
+//   setUserList: (newUserList: UserListItemType[]) => void;
+// }>(set => ({
+//   userList: [],
+//   setUserList: newUserList => set(() => ({userList: newUserList})),
+// }));
 
 export const useUsersList = () => {
   const [zodError, setZodError] = useState(false);
-  const userListStore = _userListStore(state => state);
+  // const userListStore = _userListStore(state => state);
 
   const query = useQuery(['users-list'], async () => {
     const response = await http.get('/users');
     const parse = z.array(UserListItemSchema).safeParse(response.data.data);
     if (parse.success) {
-      userListStore.setUserList(response.data.data);
+      // userListStore.setUserList(response.data.data);
       return response.data;
     } else {
       setZodError(true);
@@ -39,7 +39,7 @@ export const useUsersList = () => {
     queryData: (query.data?.data ?? []) as UserListItemType[],
     loading: query.isLoading || query.isIdle,
     error: query.isError || zodError,
-    //TODO: change this to: useQuery(['users-list'])
-    store: userListStore,
+    //store: userListStore.userList
+    store: useQuery(['users-list']),
   };
 };

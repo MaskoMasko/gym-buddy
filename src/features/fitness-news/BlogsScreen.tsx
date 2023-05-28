@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import {Image, ScrollView} from 'react-native';
+import {Image, ScrollView, StyleSheet} from 'react-native';
 import {useQuery} from 'react-query';
 import {Text} from '../../components/Text';
 import {View} from '../../components/View';
@@ -29,14 +29,7 @@ export const BlogsScreen = () => {
                 margin: sizes.large,
               }}
               centerContent>
-              <Image
-                source={{uri: item.image}}
-                style={{
-                  width: '95%',
-                  height: 200,
-                  margin: sizes.medium,
-                }}
-              />
+              <Image source={{uri: item.image}} style={styles.image} />
               <Text>{item.title}</Text>
             </View>
           );
@@ -45,3 +38,11 @@ export const BlogsScreen = () => {
     </ScreenNoScroll>
   );
 };
+
+const styles = StyleSheet.create({
+  image: {
+    width: '95%',
+    height: 200,
+    margin: sizes.medium,
+  },
+});

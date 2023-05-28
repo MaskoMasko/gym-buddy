@@ -4,6 +4,7 @@ import {View} from '../../components/View';
 import {Text} from '../../components/Text';
 import _ from 'lodash';
 import {Dropdown} from '../../components/Dropdown';
+import {StyleSheet} from 'react-native/types';
 
 //TODO: rename ovo
 export const WorkoutDetailsListItem = ({workout}: {workout: Workout}) => {
@@ -16,7 +17,7 @@ export const WorkoutDetailsListItem = ({workout}: {workout: Workout}) => {
         backgroundColorDarkGray
         paddingHorizontalMedium
         paddingVerticalLarge
-        style={{borderRadius: 15}}>
+        style={styles.borderRadius15}>
         <View flexDirectionRow justifyContentSpaceBetween>
           <Text colorOffWhite>{workout.type}</Text>
           <Text colorOffWhite>{_.capitalize(workout.difficulty)}</Text>
@@ -46,3 +47,9 @@ export const WorkoutDetailsListItem = ({workout}: {workout: Workout}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  borderRadius15: {
+    borderRadius: 15,
+  },
+});
