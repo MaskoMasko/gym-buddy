@@ -4,7 +4,7 @@ import {View} from '../../components/View';
 import {Text} from '../../components/Text';
 import _ from 'lodash';
 import {Dropdown} from '../../components/Dropdown';
-import {StyleSheet} from 'react-native/types';
+import {StyleSheet} from 'react-native';
 
 //TODO: rename ovo
 export const WorkoutDetailsListItem = ({workout}: {workout: Workout}) => {
