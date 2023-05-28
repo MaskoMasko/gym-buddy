@@ -1,16 +1,18 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useLayoutEffect} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
-import {ScreenNoScroll} from '../../components/ScreenNoScroll';
+import React, {useLayoutEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {Spacer} from '../../components/Spacer';
 import {Text} from '../../components/Text';
 import {TouchableOpacity} from '../../components/TouchableOpacity';
 import {View} from '../../components/View';
 import {RootStackNavigationProps} from '../../navigation/RouterTypes';
-import {WorkoutDetailsListItem} from './WorkoutDetailsListItem';
-import {useWorkouts} from './fetch/useWorkouts';
+import {Button} from '../../components/Button';
+import {CheckBox} from '../../components/Checkbox';
+import {Dropdown} from '../../components/Dropdown';
+import {Screen} from '../../components/Screen';
+import {colors} from '../../style/palette';
+import {Icon} from '../../svg/icons/Icon';
 
-//TODO: REDESIGN!!!
 export const WorkoutDetailsScreen = () => {
   const navigation = useNavigation();
   const params =
@@ -22,94 +24,108 @@ export const WorkoutDetailsScreen = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  //                                                       read from params
-  const {queryData: workoutsList, loading, error} = useWorkouts('Abs');
-  // const [filters, setFilters] = useState({
-  //   difficulty: '',
-  //   duration: '',
-  // });
+  const [withEquipment, setWithEquipment] = useState(true);
+  const [showAdditionalOptions, setShowAdditionalOptions] = useState(false);
+  const [workoutMuscleGroupList, _] = useState(['legs', 'arms']);
   return (
-    <ScreenNoScroll queryStatus={{loading, error}} withBottomInsets>
-      {/* <View flexDirectionRow justifyContentSpaceAround>
-        <View flexDirectionRow>
-          <Text>Difficulty: </Text>
-          <Dropdown
-            placeholder="Select difficulty"
-            data={['beginner', 'intermediate', 'advanced']}
-            keyExtractor={() => Math.random().toString()}
-            renderItem={item => <Text>{item}</Text>}
-            onChange={item => {
-              const returnItem = item;
-              setFilters(prevValues => ({
-                ...prevValues,
-                difficulty: returnItem,
-              }));
-              return returnItem;
-            }}
-          />
-        </View>
-        <View flexDirectionRow>
-          <Text>Duration: </Text>
-          <Dropdown
-            placeholder="Select workout duration"
-            data={[15, 30, 45, 60]}
-            keyExtractor={item => String(item)}
-            renderItem={item => <Text>{item}</Text>}
-            onChange={item => {
-              const returnItem = String(item);
-              setFilters(prevValues => ({
-                ...prevValues,
-                duration: returnItem,
-              }));
-              return returnItem;
-            }}
-          />
-        </View>
-      </View> */}
-      {/* list of workouts */}
-      <FlatList
-        data={workoutsList}
-        keyExtractor={item => String(item.id)}
-        renderItem={({item: workout}) => {
-          return <WorkoutDetailsListItem workout={workout} />;
-        }}
-        ListHeaderComponent={() => (
-          <View paddingHorizontalMedium paddingVerticalSmall flexDirectionRow>
-            <TouchableOpacity
-              flex
-              paddingSmall
-              centerContent
-              style={styles.filterButton}>
-              <Text>Sort By</Text>
-            </TouchableOpacity>
-            <Spacer small />
-            <TouchableOpacity
-              flex
-              paddingSmall
-              centerContent
-              style={styles.filterButton}>
-              <Text>Filter</Text>
-            </TouchableOpacity>
+    <Screen withBottomInsets>
+      <View paddingSmall>
+        <Text large>Difficulty:</Text>
+
+        <View paddingVerticalSmall>
+          <View paddingSmall style={styles.dropdownContainer}>
+            <Dropdown
+              data={['beginner', 'amateur', 'intermediate', 'advanced']}
+              textColor={colors.dark}
+              keyExtractor={item => item}
+              onChange={item => item}
+              placeholder={'Select Difficulty'}
+              renderItem={item => (
+                <Text style={styles.padding5} key={item}>
+                  {item}
+                </Text>
+              )}
+            />
           </View>
+        </View>
+        <Text large>Equipment \ Weights:</Text>
+        <View flexDirectionRow centerContent paddingVerticalSmall>
+          <Text>Yes</Text>
+          <Spacer />
+          <CheckBox
+            checked={withEquipment}
+            onPress={() => setWithEquipment(prevState => !prevState)}
+          />
+          <Spacer />
+          <Text>No</Text>
+          <Spacer />
+          <CheckBox
+            checked={!withEquipment}
+            onPress={() => setWithEquipment(prevState => !prevState)}
+          />
+          <Spacer />
+        </View>
+        <Text large>Duration (est.):</Text>
+        <View paddingVerticalSmall>
+          <View paddingSmall style={styles.dropdownContainer}>
+            <Dropdown
+              data={[15, 30, 45, 60]}
+              keyExtractor={item => String(item)}
+              textColor={colors.dark}
+              onChange={item => String(item)}
+              placeholder={'Select Duration'}
+              renderItem={item => (
+                <Text style={styles.padding5} key={item}>
+                  {item}
+                </Text>
+              )}
+            />
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => setShowAdditionalOptions(prevState => !prevState)}
+          activeOpacity={0.5}
+          flexDirectionRow
+          alignItemsCenter
+          justifyContentSpaceBetween>
+          <Text>Additional options</Text>
+          <Spacer>
+            <Icon name="circle-plus" size={20} />
+          </Spacer>
+        </TouchableOpacity>
+        {showAdditionalOptions && (
+          <>
+            <Text>Target muscle group: </Text>
+            <Spacer extraSmall />
+            <Dropdown
+              data={['abs', 'chest', 'arms', 'legs']}
+              keyExtractor={item => item}
+              onChange={item => item}
+              textColor={colors.dark}
+              placeholder={workoutMuscleGroupList}
+              renderItem={item => (
+                <Text style={styles.padding5} key={item}>
+                  {item}
+                </Text>
+              )}
+            />
+          </>
         )}
-      />
-    </ScreenNoScroll>
+        <Spacer extraSmall />
+        <Button>Create workout session</Button>
+      </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  filterButton: {
-    borderRadius: 20,
-    backgroundColor: '#fafafa',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
+  dropdownContainer: {
+    borderRadius: 5,
+    borderColor: colors.disabled,
+    borderWidth: 1,
+  },
+  padding5: {
+    padding: 5,
   },
 });

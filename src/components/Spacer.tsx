@@ -8,9 +8,16 @@ interface SpacerProps {
   medium?: boolean;
   large?: boolean;
   extraLarge?: boolean;
+  children?: React.ReactNode;
 }
 
-export const Spacer = ({extraSmall, small, large, extraLarge}: SpacerProps) => {
+export const Spacer = ({
+  extraSmall,
+  small,
+  large,
+  extraLarge,
+  ...rest
+}: SpacerProps) => {
   function resolveSpacing() {
     if (extraSmall) {
       return sizes.extraSmall;
@@ -24,5 +31,5 @@ export const Spacer = ({extraSmall, small, large, extraLarge}: SpacerProps) => {
       return sizes.medium;
     }
   }
-  return <View style={{margin: resolveSpacing()}} />;
+  return <View style={{margin: resolveSpacing()}} {...rest} />;
 };

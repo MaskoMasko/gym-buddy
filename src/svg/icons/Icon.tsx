@@ -26,6 +26,10 @@ export interface IconProps {
     | 'google'
     | 'apple'
     | 'user-add'
+    | 'arrow-down'
+    | 'arrow-up'
+    | 'circle-plus'
+    | 'close'
     | 'blog';
 }
 
@@ -241,6 +245,61 @@ export const Icon = ({name, color = colors.dark, size = 24}: IconProps) => {
           height={size}
           stroke={color}>
           <Path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83ZM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11Z" />
+        </Svg>
+      );
+    case 'arrow-down':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 20 20" fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="m10 14 6-8H4l6 8Z"
+            clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'arrow-up':
+      return (
+        <Svg viewBox="0 0 20 20" width={size} height={size} fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="m10 6 6 8H4l6-8Z"
+            clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'checkmark':
+      return (
+        <Svg viewBox="0 0 16 16" width={size} height={size} fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="M5.91 10.496 3.707 8.293a1 1 0 0 0-1.414 1.414l3 3a1 1 0 0 0 1.493-.09l7-8a1 1 0 1 0-1.572-1.235L5.91 10.496Z"
+            clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'circle-plus':
+      return (
+        <Svg viewBox="0 0 16 16" width={size} height={size} fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2Zm0 2a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2H9v2a1 1 0 1 1-2 0V9H5a1 1 0 0 1 0-2h2V5a1 1 0 0 1 1-1Z"
+            clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'close':
+      return (
+        <Svg viewBox="0 0 20 20" width={size} height={size} fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="m11.414 10 4.293-4.293a.999.999 0 1 0-1.414-1.414L10 8.586 5.707 4.293a.999.999 0 1 0-1.414 1.414L8.586 10l-4.293 4.293a.999.999 0 1 0 1.414 1.414L10 11.414l4.293 4.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L11.414 10Z"
+            clipRule="evenodd"
+          />
         </Svg>
       );
     default:
