@@ -12,7 +12,7 @@ import _ from 'lodash';
 export const WorkoutsScreen = () => {
   const navigation =
     useNavigation<
-      RootStackNavigationProps<'WorkoutDetailsScreen'>['navigation']
+      RootStackNavigationProps<'CreateWorkoutScreen'>['navigation']
     >();
   const {
     queryData: workoutCategoriesList,
@@ -28,9 +28,8 @@ export const WorkoutsScreen = () => {
               <Pressable
                 key={workout.category}
                 onPress={() =>
-                  navigation.navigate('WorkoutDetailsScreen', {
-                    workoutCategory:
-                      _.capitalize(workout.category) + ' workout',
+                  navigation.navigate('CreateWorkoutScreen', {
+                    workoutCategory: _.capitalize(workout.category),
                   })
                 }>
                 <View paddingVerticalExtraSmall style={{position: 'relative'}}>

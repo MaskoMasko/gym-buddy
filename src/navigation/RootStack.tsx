@@ -9,6 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Image, Pressable} from 'react-native';
 import {Icon} from '../svg/icons/Icon';
 import {WorkoutDetailsScreen} from '../features/workout-sessions/WorkoutDetailsScreen';
+import {CreateWorkoutScreen} from '../features/workout-sessions/CreateWorkoutScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -60,6 +61,10 @@ export const RootStack = () => {
       <Stack.Screen
         name="WorkoutDetailsScreen"
         component={WorkoutDetailsScreen}
+      />
+      <Stack.Screen
+        name="CreateWorkoutScreen"
+        component={CreateWorkoutScreen}
       />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen
