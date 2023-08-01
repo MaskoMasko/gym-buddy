@@ -5,16 +5,18 @@ import {z} from 'zod';
 import {useState} from 'react';
 
 const WorkoutCategorySchema = z.object({
-  category: z.string(),
+  // category: z.string(),
+  id: z.number(),
+  name: z.string(),
   image: z.string(),
 });
-type WorkoutCategory = z.infer<typeof WorkoutCategorySchema>;
+export type WorkoutCategory = z.infer<typeof WorkoutCategorySchema>;
 
 export const useWorkoutCategories = () => {
   const [zodError, setZodError] = useState(false);
   async function _getWorkoutCategories() {
     try {
-      const response = await http.get('/workout-categories');
+      const response = await http.get('/exercises/category');
       const parse = ResponseSchema(WorkoutCategorySchema).safeParse(
         response.data,
       );

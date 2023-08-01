@@ -1,17 +1,17 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {ImageBackground, StyleSheet, useWindowDimensions} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import * as yup from 'yup';
 import {Button} from '../../components/Button';
 import {OrDivider} from '../../components/OrDivider';
 import {Screen} from '../../components/Screen';
+import {Spacer} from '../../components/Spacer';
 import {Text} from '../../components/Text';
 import {TextInput} from '../../components/TextInput';
 import {View} from '../../components/View';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Spacer} from '../../components/Spacer';
-import {sizes} from '../../style/componentConstants';
 import useAuth from '../../hooks/useAuth';
-import * as yup from 'yup';
+import {sizes} from '../../style/componentConstants';
 
 const welcomeSchema = yup.object().shape({
   email: yup

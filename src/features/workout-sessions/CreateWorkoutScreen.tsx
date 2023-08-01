@@ -1,4 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
+import _ from 'lodash';
 import React, {useLayoutEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Button} from '../../components/Button';
@@ -8,11 +9,13 @@ import {Spacer} from '../../components/Spacer';
 import {Text} from '../../components/Text';
 import {TouchableOpacity} from '../../components/TouchableOpacity';
 import {View} from '../../components/View';
+import {useDropdown} from '../../hooks/useDropdown';
 import {RootStackNavigationProps} from '../../navigation/RouterTypes';
+import {EXERCISE_DIFFICULTIES, EXERCISE_DURATIONS} from '../../store/constants';
 import {colors} from '../../style/palette';
 import {Icon} from '../../svg/icons/Icon';
-import {Workout, useWorkouts} from './fetch/useWorkouts';
-import {useDropdown} from '../../hooks/useDropdown';
+import {ExerciseParams, useExercises} from './fetch/useExercises';
+import {useWorkoutCategories} from './fetch/useWorkoutCategories';
 
 export const CreateWorkoutScreen = () => {
   const navigation =
@@ -27,33 +30,51 @@ export const CreateWorkoutScreen = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const dummyData = {
-    difficulty: ['beginner', 'amateur', 'intermediate', 'advanced'],
-    duration: [15, 30, 45, 60],
-    types: ['abs', 'chest', 'arms', 'legs'],
-  };
   const [withEquipment, setWithEquipment] = useState<null | boolean>(null);
   const [showAdditionalOptions, setShowAdditionalOptions] = useState(false);
-  const [workoutMuscleGroupList, setWorkoutMuscleGroupList] = useState([
-    params.workoutCategory,
-  ]);
-  const [workoutQueryParams, setWorkoutQueryParams] = useState<null | Partial<
-    Omit<Workout, 'type'> & {type: string | string[]}
-  >>(null);
-  const {createWorkout, error, loading} = useWorkouts();
+  const {
+    queryData: categories,
+    error: categoriesError,
+    loading: categoriesLoading,
+  } = useWorkoutCategories();
+  const [workoutQueryParams, setWorkoutQueryParams] =
+    useState<null | ExerciseParams>(null);
+  const {
+    createWorkout,
+    error: workoutError,
+    loading: workoutLoading,
+  } = useExercises();
   const {Dropdown: DifficultyDropdown} = useDropdown();
   const {Dropdown: DurationDropdown} = useDropdown();
-  const {Dropdown: MuscleTypeDropdown, currentValue: muscleTypeValue} =
+  const {Dropdown: MuscleTypeDropdown, currentValue: muscleTypesList} =
     useDropdown();
+  const initialMuscleTypeListValue = [params.workoutCategory];
+  const equipmentParam =
+    withEquipment !== null ? {equipment: withEquipment} : {};
+  const categoryIdsList = (
+    (typeof muscleTypesList === 'string'
+      ? [muscleTypesList]
+      : muscleTypesList) ?? initialMuscleTypeListValue
+  ).map(type => {
+    const categoryFound = categories.find(category => category.name === type);
+    if (categoryFound) {
+      return categoryFound.id;
+    }
+  });
   return (
-    <Screen withBottomInsets queryStatus={{loading, error}}>
+    <Screen
+      withBottomInsets
+      queryStatus={{
+        loading: workoutLoading || categoriesLoading,
+        error: workoutError || categoriesError,
+      }}>
       <View paddingSmall>
         <Text large>Difficulty:</Text>
         <View paddingVerticalSmall>
           <View paddingSmall style={styles.dropdownContainer}>
             {/* {Dropdown} */}
             <DifficultyDropdown
-              data={dummyData.difficulty}
+              data={EXERCISE_DIFFICULTIES}
               textColor={colors.dark}
               keyExtractor={item => item}
               onChange={item => {
@@ -98,7 +119,7 @@ export const CreateWorkoutScreen = () => {
         <View paddingVerticalSmall>
           <View paddingSmall style={styles.dropdownContainer}>
             <DurationDropdown
-              data={dummyData.duration}
+              data={EXERCISE_DURATIONS}
               keyExtractor={item => String(item)}
               textColor={colors.dark}
               onChange={item => {
@@ -131,17 +152,16 @@ export const CreateWorkoutScreen = () => {
             <Text>Target muscle group: </Text>
             <Spacer extraSmall />
             <MuscleTypeDropdown
-              data={dummyData.types}
-              keyExtractor={item => item}
+              data={categories}
+              keyExtractor={item => String(item.id)}
               onChange={item => {
-                setWorkoutMuscleGroupList(prev => [...prev, item]);
-                return item;
+                return item.name;
               }}
               textColor={colors.dark}
-              placeholder={workoutMuscleGroupList}
+              placeholder={initialMuscleTypeListValue}
               renderItem={item => (
-                <Text style={styles.padding5} key={item}>
-                  {item}
+                <Text style={styles.padding5} key={item.id}>
+                  {item.name}
                 </Text>
               )}
             />
@@ -150,20 +170,16 @@ export const CreateWorkoutScreen = () => {
         <Spacer extraSmall />
         <Button
           onPress={async () => {
-            // setWorkoutQueryParams(prev => ({
-            //   ...prev,
-            //   equipment: withEquipment ?? undefined,
-            // }));
-            await createWorkout(
-              {
-                ...workoutQueryParams,
-                type: muscleTypeValue ?? workoutMuscleGroupList,
-                equipment: withEquipment !== null ? withEquipment : undefined,
-              } ?? {},
-            );
+            await createWorkout({
+              ...workoutQueryParams,
+              ...equipmentParam,
+              categoryIds: _.filter(categoryIdsList, _.isNumber),
+            });
             setWorkoutQueryParams(null);
             setWithEquipment(null);
-            navigation.navigate('WorkoutDetailsScreen');
+            navigation.navigate('WorkoutDetailsScreen', {
+              workoutCategory: params.workoutCategory,
+            });
           }}>
           Create workout session
         </Button>

@@ -23,23 +23,23 @@ export const WorkoutsScreen = () => {
     <ScreenNoScroll queryStatus={{loading, error}}>
       <View paddingLarge>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {workoutCategoriesList.map(workout => {
+          {workoutCategoriesList.map(category => {
             return (
               <Pressable
-                key={workout.category}
+                key={category.name}
                 onPress={() =>
                   navigation.navigate('CreateWorkoutScreen', {
-                    workoutCategory: _.capitalize(workout.category),
+                    workoutCategory: _.capitalize(category.name),
                   })
                 }>
                 <View paddingVerticalExtraSmall style={{position: 'relative'}}>
-                  <ImageTransition source={workout.image} />
+                  <ImageTransition source={category.image} />
                   <View
                     paddingMedium
                     alignItemsCenter
                     style={StyleSheet.absoluteFillObject}>
                     <Text colorOffWhite weightSemibold>
-                      {workout.category.toUpperCase()}
+                      {category.name.toUpperCase()}
                     </Text>
                   </View>
                 </View>
