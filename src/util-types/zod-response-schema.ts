@@ -1,6 +1,6 @@
-import {AnyZodObject, z} from 'zod';
+import {AnyZodObject, ZodUnion, z} from 'zod';
 
-export const ResponseSchema = (dataSchema: AnyZodObject) => {
+export const ResponseSchema = (dataSchema: AnyZodObject | ZodUnion<any>) => {
   return z.object({
     data: z.array(dataSchema),
   });
