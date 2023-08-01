@@ -1,20 +1,11 @@
-# Example of TODO.md
 
-Project - GymBuddy
+# Gym Buddy
 
-### Todo
+## TODO:
 
-- [ ] useDropdown.tsx 
-  - [ ] optimize Dropdown component 
-- [ ] CreateWorkoutScreen.tsx
-  - [ ] withEquipment logic - yay or nay
-- [ ] Header.tsx
-  - [ ] Logo button ne dela bas 
-
-### In Progress
-
-- [ ] Testing  
-
-### Done ✓
-
-- [x] Testing  
+- Workout Features
+  - [ ] Implement difficulty when creating workouts
+  - [ ] Fetching more data for workouts than needed, so user can choose between multiple workouts 
+  - [ ] Implement validation to create workout form
+  - [ ] Better emphasize the difference between a flat list and the rest of the component
+  - [ ] add reanimated layout animations
