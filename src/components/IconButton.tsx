@@ -7,27 +7,37 @@ import {colors} from '../style/palette';
 import {Text} from './Text';
 import {Spacer} from './Spacer';
 
+interface CustomIconButtonProps {
+  iconName: IconProps['name'];
+  iconSize?: IconProps['size'];
+  iconColor?: IconProps['color'];
+}
 interface IconButtonProps
   extends TouchableOpacityProps,
     LayoutProps,
-    IconProps {}
+    CustomIconButtonProps {}
 
 export const IconButton = ({
   children,
-  name,
-  size = 24,
-  color = colors.dark,
+  iconName,
+  iconSize = 24,
+  iconColor = colors.dark,
   ...rest
 }: IconButtonProps) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.5}
       {...rest}
       justifyContentSpaceBetween
       alignItemsCenter
       flexDirectionRow>
-      <Text>{children}</Text>
-      <Spacer small />
-      <Icon name={name} size={size} color={color} />
+      {children && (
+        <>
+          <Text>{children}</Text>
+          <Spacer small />
+        </>
+      )}
+      <Icon name={iconName} size={iconSize} color={iconColor} />
     </TouchableOpacity>
   );
 };

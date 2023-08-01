@@ -6,6 +6,7 @@ import {LayoutProps} from '../hoc/withLayoutProps';
 import {View} from './View';
 import {Icon, IconProps} from '../svg/icons/Icon';
 import {Spacer} from './Spacer';
+import {colors} from '../style/palette';
 
 interface ExtraButtonProps {
   leftIconName?: IconProps['name'];
@@ -55,12 +56,17 @@ export const Button = forwardRef(
     }
     return (
       <TouchableOpacity
+        ref={ref}
         activeOpacity={0.8}
         centerContent
         backgroundColorDarkGray={!light}
         backgroundColorLight={light}
-        style={styles.defaultButton}
-        ref={ref}
+        style={[
+          styles.defaultButton,
+          light
+            ? {borderColor: colors.darkGray, borderWidth: 1, borderRadius: 5}
+            : null,
+        ]}
         {...props}>
         {resolveChildren()}
       </TouchableOpacity>

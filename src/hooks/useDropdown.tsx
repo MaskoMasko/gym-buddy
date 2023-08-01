@@ -51,9 +51,9 @@ export const useDropdown = () => {
                       flexDirectionRow
                       alignItemsCenter>
                       <IconButton
-                        name="close"
-                        size={15}
-                        color={colors.darkGray}
+                        iconName="close"
+                        iconSize={15}
+                        iconColor={colors.darkGray}
                         onPress={() => {
                           setCurrentValue(
                             (value as string[]).filter(
