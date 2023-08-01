@@ -6,8 +6,10 @@ import {QueryClientProvider} from './src/service/react-query/queryClient';
 import {Screen} from './src/components/Screen';
 import {View} from './src/components/View';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ActivityIndicator, Linking, Platform} from 'react-native';
+import {ActivityIndicator, Linking, Platform, StyleSheet} from 'react-native';
 import './src/utils/atArray';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {AlertContextProvider} from './src/hooks/useAlert';
 
 function AppEntry() {
   const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_PERSISTENCE';
@@ -18,8 +20,8 @@ function AppEntry() {
   const [initialState, setInitialState] = useState();
 
   useEffect(() => {
-    // toggle to see results
-    const shouldPersistNavigation = true;
+    // PERSIST_NAVIGATION -> toggle
+    const shouldPersistNavigation = false;
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();
@@ -56,28 +58,38 @@ function AppEntry() {
     return <ActivityIndicator />;
   }
   return (
-    <SafeAreaProvider>
-      <QueryClientProvider>
-        <AuthUserProvider>
-          {isAppReady ? (
-            <Router
-              initialState={initialState}
-              onStateChange={(state: any) =>
-                AsyncStorage.setItem(
-                  NAVIGATION_PERSISTENCE_KEY,
-                  JSON.stringify(state),
-                )
-              }
-            />
-          ) : (
-            <Screen>
-              <View flex backgroundColorTheme />
-            </Screen>
-          )}
-        </AuthUserProvider>
-      </QueryClientProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={styles.flex}>
+      <SafeAreaProvider>
+        <AlertContextProvider>
+          <QueryClientProvider>
+            <AuthUserProvider>
+              {isAppReady ? (
+                <Router
+                  initialState={initialState}
+                  onStateChange={(state: any) =>
+                    AsyncStorage.setItem(
+                      NAVIGATION_PERSISTENCE_KEY,
+                      JSON.stringify(state),
+                    )
+                  }
+                />
+              ) : (
+                <Screen>
+                  <View flex backgroundColorTheme />
+                </Screen>
+              )}
+            </AuthUserProvider>
+          </QueryClientProvider>
+        </AlertContextProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
 export default AppEntry;
+
+const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+});
