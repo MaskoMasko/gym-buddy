@@ -10,6 +10,7 @@ import {Image, Pressable} from 'react-native';
 import {Icon} from '../svg/icons/Icon';
 import {WorkoutDetailsScreen} from '../features/workout-sessions/WorkoutDetailsScreen';
 import {CreateWorkoutScreen} from '../features/workout-sessions/CreateWorkoutScreen';
+import {WorkoutStartedScreen} from '../features/workout-sessions/WorkoutStartedScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -61,6 +62,12 @@ export const RootStack = () => {
       <Stack.Screen
         name="WorkoutDetailsScreen"
         component={WorkoutDetailsScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="WorkoutStartedScreen"
+        component={WorkoutStartedScreen}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="CreateWorkoutScreen"
