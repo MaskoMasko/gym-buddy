@@ -12,8 +12,10 @@ import {RootStackNavigationProps} from '../../navigation/RouterTypes';
 import {useExercises} from './fetch/useExercises';
 import {Icon} from '../../svg/icons/Icon';
 import {colors} from '../../style/palette';
+import {useWorkout} from './fetch/useWorkout';
+import dayjs from 'dayjs';
 
-const InnerModelComponent = () => {
+const InnerModelComponent = ({createWorkout}: any) => {
   const navigation =
     useNavigation<
       RootStackNavigationProps<'WorkoutStartedScreen'>['navigation']
@@ -49,6 +51,7 @@ const InnerModelComponent = () => {
     setSkippedExercise(prev => !prev);
   };
 
+  const exercisesIdsList = queryData.filter(item => typeof item !== 'string');
   return (
     <View
       flex
@@ -64,7 +67,14 @@ const InnerModelComponent = () => {
             Congratulations, workout completed!
           </Text>
           <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
+              await createWorkout({
+                date: dayjs(),
+                completed: true,
+                duration: 5,
+                est_duration: 5,
+                exercises: exercisesIdsList,
+              });
               if (navigation.canGoBack()) {
                 navigation.goBack();
               }
@@ -146,11 +156,13 @@ export const WorkoutStartedScreen = () => {
   const {workoutCategory} =
     useRoute<RootStackNavigationProps<'WorkoutStartedScreen'>['route']>()
       .params;
+  const {createWorkout, loading, error} = useWorkout();
+
   return (
-    <Screen withTopInsets withBottomInsets>
+    <Screen withTopInsets withBottomInsets queryStatus={{loading, error}}>
       <View flex backgroundColorTheme>
         <Text>{workoutCategory}</Text>
-        <InnerModelComponent />
+        <InnerModelComponent createWorkout={createWorkout} />
       </View>
     </Screen>
   );
