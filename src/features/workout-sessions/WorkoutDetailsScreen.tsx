@@ -37,7 +37,7 @@ export const WorkoutDetailsScreen = () => {
       queryStatus={{loading, error}}
       withTopInsets
       withBottomInsets
-      withList>
+      preventScroll>
       <View paddingHorizontalMedium style={{paddingBottom: 110}}>
         <FlatList
           data={queryData}

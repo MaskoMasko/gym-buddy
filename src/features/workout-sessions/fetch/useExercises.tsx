@@ -6,7 +6,7 @@ import {client} from '../../../service/react-query/queryClient';
 import {ResponseSchema} from '../../../util-types/zod-response-schema';
 import {create} from 'zustand';
 
-const ExerciseSchema = z.object({
+export const ExerciseSchema = z.object({
   id: z.number(),
   name: z.string(),
   duration: z.nullable(z.number()),

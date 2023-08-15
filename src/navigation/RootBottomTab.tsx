@@ -99,6 +99,10 @@ export const RootBottomTab = () => {
                 color={focused ? colors.darkGray : '#5c5c5c'}
               />
             ),
+            headerShown: false,
+            tabBarStyle: {
+              display: 'none',
+            },
           } as any
         }
       />

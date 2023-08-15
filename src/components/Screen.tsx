@@ -14,7 +14,6 @@ interface ScreenProps {
   };
   withTopInsets?: boolean;
   withBottomInsets?: boolean;
-  withList?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -35,7 +34,6 @@ export const Screen = ({
   queryStatus,
   withBottomInsets,
   withTopInsets,
-  withList,
 }: ScreenProps) => {
   const insets = useSafeAreaInsets();
   const content = (
@@ -54,7 +52,7 @@ export const Screen = ({
       style={styles.container}
       keyboardVerticalOffset={-(insets.bottom + insets.top)}
       behavior={'padding'}>
-      {withList ? (
+      {preventScroll ? (
         <View
           style={[
             styles.flexGrow,
@@ -73,7 +71,8 @@ export const Screen = ({
             paddingBottom: withBottomInsets ? insets.bottom : 0,
           }}
           keyboardShouldPersistTaps={'never'}
-          bounces={!preventScroll}>
+          // bounces={!preventScroll}
+        >
           {content}
         </ScrollView>
       )}

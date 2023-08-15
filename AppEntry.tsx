@@ -21,7 +21,7 @@ function AppEntry() {
 
   useEffect(() => {
     // PERSIST_NAVIGATION -> toggle
-    const shouldPersistNavigation = false;
+    const shouldPersistNavigation = __DEV__;
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();
