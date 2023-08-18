@@ -100,28 +100,23 @@ export const RootBottomTab = () => {
               />
             ),
             headerShown: false,
-            tabBarStyle: {
-              display: 'none',
-            },
           } as any
         }
       />
       <Tab.Screen
         name="BlogsScreen"
         component={BlogsScreen}
-        options={
-          {
-            title: 'Fitness News',
-            shouldRenderLogo: true,
-            tabBarIcon: ({focused}: TabBarIconProps) => (
-              <Icon
-                size={30}
-                name={'projection'}
-                color={focused ? colors.darkGray : '#5c5c5c'}
-              />
-            ),
-          } as any
-        }
+        options={{
+          title: 'Fitness News',
+          tabBarIcon: ({focused}: TabBarIconProps) => (
+            <Icon
+              size={30}
+              name={'projection'}
+              color={focused ? colors.darkGray : '#5c5c5c'}
+            />
+          ),
+          headerShown: false,
+        }}
       />
     </Tab.Navigator>
   );
