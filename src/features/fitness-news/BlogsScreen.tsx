@@ -1,48 +1,182 @@
-import axios from 'axios';
-import React from 'react';
-import {Image, ScrollView, StyleSheet} from 'react-native';
-import {useQuery} from 'react-query';
+import React, {useState} from 'react';
+import {Screen} from '../../components/Screen';
 import {Text} from '../../components/Text';
 import {View} from '../../components/View';
-import {sizes} from '../../style/componentConstants';
-import {ScreenNoScroll} from '../../components/ScreenNoScroll';
+import {useBlogs} from './fetch/useBlogs';
+import {colors} from '../../style/palette';
+import {FlatList, Image} from 'react-native';
+import {IconButton} from '../../components/IconButton';
+import {Spacer} from '../../components/Spacer';
 
 export const BlogsScreen = () => {
-  const {data, isLoading, isError, isIdle} = useQuery('blogs', async () => {
-    const res = await axios.get('http://localhost:4000/blogs');
-    return res.data;
-  });
-  if (isIdle || isLoading) {
-    return <Text>Loading...</Text>;
-  }
-  if (isError) {
-    return <Text>Error...</Text>;
-  }
+  const [likedBlog, setLikedBlog] = useState(false);
+  const {blogsList, loading, error} = useBlogs();
   return (
-    <ScreenNoScroll>
-      <ScrollView>
-        {data.data.map((item: any) => {
-          return (
+    <Screen preventScroll withTopInsets queryStatus={{loading, error}}>
+      <FlatList
+        data={blogsList}
+        keyExtractor={item => String(item.id)}
+        ListHeaderComponent={() => (
+          <View
+            flexDirectionRow
+            justifyContentSpaceBetween
+            paddingHorizontalMedium
+            paddingVerticalSmall>
+            <Text extraLarge>Fitness News</Text>
             <View
-              key={item.id}
+              flexDirectionRow
               style={{
-                margin: sizes.large,
-              }}
-              centerContent>
-              <Image source={{uri: item.image}} style={styles.image} />
-              <Text>{item.title}</Text>
+                borderRadius: 20,
+                backgroundColor: colors.darkGray,
+                borderWidth: 1,
+                borderColor: colors.disabled,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+                shadowOpacity: 0.3,
+                shadowRadius: 4.65,
+
+                elevation: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <IconButton
+                iconRight
+                iconName="circle-plus"
+                iconColor={colors.white}>
+                <Text colorOffWhite onPress={async () => {}}>
+                  Create
+                </Text>
+              </IconButton>
+            </View>
+          </View>
+        )}
+        renderItem={({item: blog}) => {
+          return (
+            <View paddingVerticalSmall paddingHorizontalMedium>
+              <View
+                style={{
+                  padding: 10,
+                  borderWidth: 1,
+                  borderColor: colors.dark,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
+                }}
+                backgroundColorWhite>
+                <Text large>{blog.title}</Text>
+                <Text weightLight>{blog.content}</Text>
+                <Spacer extraSmall />
+                <View>
+                  <Image
+                    source={{uri: blog.media![0].url}}
+                    style={{
+                      height: 350,
+                    }}
+                  />
+                  <Spacer extraSmall />
+                  <Text extraSmall weightLight>
+                    'Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolor nesciunt fuga magnam, fugiat earum itaque voluptate
+                    assumenda quisquam nulla quam?'
+                  </Text>
+                </View>
+                <Spacer extraSmall />
+                <View
+                  paddingVerticalSmall
+                  flexDirectionRow
+                  justifyContentSpaceBetween>
+                  <View flexDirectionRow>
+                    <IconButton
+                      iconName={likedBlog ? 'heart-filled' : 'heart-empty'}
+                      iconColor={!likedBlog ? colors.dark : colors.error}
+                      paddingVerticalSmall
+                      iconSize={20}
+                      centerContent
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: '#f9f9f9',
+                        width: 40,
+                        borderWidth: 1,
+                        borderColor: colors.disabled,
+                        shadowColor: '#000',
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4.65,
+
+                        elevation: 8,
+                      }}
+                      iconLeft
+                      onPress={() => setLikedBlog(!likedBlog)}
+                    />
+                    <Spacer small />
+                    <IconButton
+                      iconName={'comment'}
+                      iconSize={20}
+                      centerContent
+                      paddingVerticalSmall
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: '#f9f9f9',
+                        borderWidth: 1,
+                        borderColor: colors.disabled,
+                        shadowColor: '#000',
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4.65,
+
+                        elevation: 8,
+                      }}
+                      iconLeft
+                      onPress={() => setLikedBlog(!likedBlog)}>
+                      <Text extraSmall>Comments: {blog.comments.length}</Text>
+                    </IconButton>
+                  </View>
+                  <IconButton
+                    iconName={'share'}
+                    iconSize={20}
+                    iconColor={!likedBlog ? colors.dark : colors.white}
+                    centerContent
+                    paddingVerticalSmall
+                    style={{
+                      width: 40,
+                      borderRadius: 20,
+                      backgroundColor: '#f9f9f9',
+                      borderWidth: 1,
+                      borderColor: colors.disabled,
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 0,
+                        height: 4,
+                      },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 4.65,
+
+                      elevation: 8,
+                    }}
+                    iconLeft
+                    onPress={() => setLikedBlog(!likedBlog)}
+                  />
+                </View>
+              </View>
             </View>
           );
-        })}
-      </ScrollView>
-    </ScreenNoScroll>
+        }}
+      />
+    </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  image: {
-    width: '95%',
-    height: 200,
-    margin: sizes.medium,
-  },
-});

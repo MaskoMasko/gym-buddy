@@ -37,6 +37,10 @@ export interface IconProps {
     | 'play'
     | 'chevron-right'
     | 'chevron-left'
+    | 'heart-empty'
+    | 'heart-filled'
+    | 'comment'
+    | 'share'
     | 'blog';
 }
 
@@ -395,6 +399,53 @@ export const Icon = ({name, color = colors.dark, size = 24}: IconProps) => {
             fillRule="evenodd"
             d="M10.707 12.293a.999.999 0 1 1-1.414 1.414l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L6.414 8l4.293 4.293Z"
             clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'heart-empty':
+      return (
+        <Svg height={size} width={size} viewBox="0 0 20 20" fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="m10 17-6.522-6.035C2.525 10.084 2 8.91 2 7.66s.525-2.423 1.478-3.305C5.254 2.71 8.042 2.564 10 3.909c1.958-1.345 4.746-1.198 6.522.446C17.475 5.237 18 6.41 18 7.66s-.525 2.424-1.478 3.305L10 17Zm5.164-7.503c.548-.507.836-1.15.836-1.837 0-.686-.288-1.33-.836-1.837-1.067-.988-2.818-1.1-4.031-.265L10 6.336l-1.133-.778c-1.213-.834-2.964-.723-4.03.264C4.286 6.33 4 6.974 4 7.66c0 .687.288 1.33.836 1.837L10 14.275l5.164-4.778Z"
+            clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'heart-filled':
+      return (
+        <Svg height={size} width={size} viewBox="0 0 20 20" fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="m10 17-6.522-6.035C2.525 10.084 2 8.91 2 7.66s.525-2.423 1.478-3.305C5.254 2.71 8.042 2.564 10 3.909c1.958-1.345 4.746-1.198 6.522.446C17.475 5.237 18 6.41 18 7.66s-.525 2.424-1.478 3.305L10 17Z"
+            clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'comment':
+      return (
+        <Svg height={size} width={size} viewBox="0 0 20 20" fill="none">
+          <Path
+            fill={color}
+            fillRule="evenodd"
+            d="M15 2a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-2.586l-1.707 1.707a1 1 0 0 1-1.414 0L7.586 16H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h10Zm0 2H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3a1 1 0 0 1 .707.293L10 15.586l1.293-1.293A1 1 0 0 1 12 14h3a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm-2 6a1 1 0 1 1 0 2H7a1 1 0 1 1 0-2h6Zm0-4a1 1 0 1 1 0 2H7a1 1 0 0 1 0-2h6Z"
+            clipRule="evenodd"
+          />
+        </Svg>
+      );
+    case 'share':
+      return (
+        <Svg
+          stroke="#000"
+          strokeWidth={51.2}
+          viewBox="-40.96 -40.96 593.92 593.92"
+          height={size}
+          width={size}>
+          <Path
+            d="M512 255.995 277.045 65.394v103.574h-57.542c-208.59 0-249.35 153.44-201.394 266.128 9.586-103.098 142.053-100.701 237.358-100.701h21.578v112.211L512 255.995z"
+            fill={color}
           />
         </Svg>
       );
