@@ -41,87 +41,87 @@ export const LoginScreen = ({
   );
 
   return (
-    <Screen preventScroll>
+    <Screen>
       <ImageBackground
         source={require('../../assets/images/login-background.jpg')}
         style={styles.image}
       />
-      <View justifyContentCenter flex>
-        <Text
-          colorWhite
-          weightMedium
-          style={{fontSize: sizes.medium * 2, paddingLeft: sizes.large}}>
-          Login
-        </Text>
-        <View paddingSmall style={styles.backgroundLightDarkContainer}>
-          <View paddingVerticalMedium paddingHorizontalExtraLarge>
-            <View style={{padding: sizes.medium}}>
-              <View flex flexDirectionRow paddingVerticalSmall>
-                <Image
-                  source={require('../../assets/images/default-profile-img.png')}
-                  style={styles.userProfileImage}
-                />
-                <Spacer small />
-                <View>
-                  <Text extraSmall weightSemibold colorWhite>
-                    {username}
-                  </Text>
-                  <Text extraSmall colorWhite>
-                    {email}
-                  </Text>
+
+      <View paddingExtraLarge flex>
+        <View justifyContentCenter flex>
+          <Text colorWhite weightMedium style={{fontSize: sizes.medium * 2}}>
+            Login
+          </Text>
+          <View paddingSmall style={styles.backgroundLightDarkContainer}>
+            <View paddingMedium>
+              <View>
+                <View flexDirectionRow paddingVerticalSmall>
+                  <Image
+                    source={require('../../assets/images/default-profile-img.png')}
+                    style={styles.userProfileImage}
+                  />
+                  <Spacer small />
+                  <View>
+                    <Text extraSmall weightSemibold colorWhite>
+                      {username}
+                    </Text>
+                    <Text extraSmall colorWhite>
+                      {email}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <TextInput
-              label={'password'}
-              value={formData.password}
-              placeholder={'Enter password'}
-              onChangeText={text => {
-                setFormData({...formData, ['password']: text});
-                if (validationErrors.password) {
-                  setValidationErrors({
-                    ...validationErrors,
-                    ['password']: null,
-                  });
-                }
-              }}
-              autoCorrect={false}
-              autoCapitalize={'none'}
-              password
-            />
-            {validationErrors.password && (
-              <Text colorRed extraSmall>
-                {validationErrors.password}
+              <TextInput
+                label={'password'}
+                value={formData.password}
+                placeholder={'Enter password'}
+                onChangeText={text => {
+                  setFormData({...formData, ['password']: text});
+                  if (validationErrors.password) {
+                    setValidationErrors({
+                      ...validationErrors,
+                      ['password']: null,
+                    });
+                  }
+                }}
+                autoCorrect={false}
+                autoCapitalize={'none'}
+                password
+              />
+              {validationErrors.password && (
+                <Text colorRed extraSmall>
+                  {validationErrors.password}
+                </Text>
+              )}
+              <Spacer extraSmall />
+              <Button
+                onPress={async () => {
+                  await loginSchema
+                    .validate(formData, {abortEarly: false})
+                    .then(async () => {
+                      const response = await login({
+                        email,
+                        password: formData.password,
+                      });
+                      if (response?.data.message) {
+                        setIsLoggedIn(true);
+                      }
+                    })
+                    .catch(err => {
+                      const errors = {};
+                      err.inner.forEach((error: any) => {
+                        (errors as any)[(error as any).path] = error.message;
+                      });
+                      setValidationErrors(errors);
+                    });
+                }}>
+                Continue
+              </Button>
+              <Spacer small />
+              <Text colorDisabled extraSmall>
+                Forgot your password?
               </Text>
-            )}
-            <Spacer extraSmall />
-            <Button
-              onPress={async () => {
-                await loginSchema
-                  .validate(formData, {abortEarly: false})
-                  .then(async () => {
-                    const response = await login({
-                      email,
-                      password: formData.password,
-                    });
-                    if (response?.data.message) {
-                      setIsLoggedIn(true);
-                    }
-                  })
-                  .catch(err => {
-                    const errors = {};
-                    err.inner.forEach((error: any) => {
-                      (errors as any)[(error as any).path] = error.message;
-                    });
-                    setValidationErrors(errors);
-                  });
-              }}>
-              Continue
-            </Button>
-            <Spacer small />
-            <Text colorDisabled extraSmall>
-              Forgot your password?
-            </Text>
+            </View>
           </View>
         </View>
       </View>

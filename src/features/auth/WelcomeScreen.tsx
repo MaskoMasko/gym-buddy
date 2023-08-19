@@ -35,7 +35,7 @@ export const WelcomeScreen = () => {
         source={require('../../assets/images/login-background.jpg')}
         style={styles.image}
       />
-      <View centerContent flex>
+      <View justifyContentCenter paddingHorizontalExtraLarge flex>
         <Text
           colorWhite
           weightMedium
@@ -66,6 +66,7 @@ export const WelcomeScreen = () => {
                 {validationErrors.email}
               </Text>
             )}
+            <Spacer extraSmall />
             <Button
               onPress={async () => {
                 await welcomeSchema
