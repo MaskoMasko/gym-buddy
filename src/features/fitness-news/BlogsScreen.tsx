@@ -4,7 +4,7 @@ import {Text} from '../../components/Text';
 import {View} from '../../components/View';
 import {useBlogs} from './fetch/useBlogs';
 import {colors} from '../../style/palette';
-import {FlatList, Image} from 'react-native';
+import {FlatList, Image, StyleSheet} from 'react-native';
 import {IconButton} from '../../components/IconButton';
 import {Spacer} from '../../components/Spacer';
 
@@ -23,25 +23,7 @@ export const BlogsScreen = () => {
             paddingHorizontalMedium
             paddingVerticalSmall>
             <Text extraLarge>Fitness News</Text>
-            <View
-              flexDirectionRow
-              style={{
-                borderRadius: 20,
-                backgroundColor: colors.darkGray,
-                borderWidth: 1,
-                borderColor: colors.disabled,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 4.65,
-
-                elevation: 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View flexDirectionRow style={styles.createBlogButton}>
               <IconButton
                 iconRight
                 iconName="circle-plus"
@@ -56,22 +38,7 @@ export const BlogsScreen = () => {
         renderItem={({item: blog}) => {
           return (
             <View paddingVerticalSmall paddingHorizontalMedium>
-              <View
-                style={{
-                  padding: 10,
-                  borderWidth: 1,
-                  borderColor: colors.dark,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-
-                  elevation: 5,
-                }}
-                backgroundColorWhite>
+              <View style={styles.postContainer} backgroundColorWhite>
                 <Text large>{blog.title}</Text>
                 <Text weightLight>{blog.content}</Text>
                 <Spacer extraSmall />
@@ -101,22 +68,7 @@ export const BlogsScreen = () => {
                       paddingVerticalSmall
                       iconSize={20}
                       centerContent
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: '#f9f9f9',
-                        width: 40,
-                        borderWidth: 1,
-                        borderColor: colors.disabled,
-                        shadowColor: '#000',
-                        shadowOffset: {
-                          width: 0,
-                          height: 4,
-                        },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 4.65,
-
-                        elevation: 8,
-                      }}
+                      style={styles.likePostButton}
                       iconLeft
                       onPress={() => setLikedBlog(!likedBlog)}
                     />
@@ -126,21 +78,7 @@ export const BlogsScreen = () => {
                       iconSize={20}
                       centerContent
                       paddingVerticalSmall
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: '#f9f9f9',
-                        borderWidth: 1,
-                        borderColor: colors.disabled,
-                        shadowColor: '#000',
-                        shadowOffset: {
-                          width: 0,
-                          height: 4,
-                        },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 4.65,
-
-                        elevation: 8,
-                      }}
+                      style={styles.commentPostButton}
                       iconLeft
                       onPress={() => setLikedBlog(!likedBlog)}>
                       <Text extraSmall>Comments: {blog.comments.length}</Text>
@@ -152,22 +90,7 @@ export const BlogsScreen = () => {
                     iconColor={!likedBlog ? colors.dark : colors.white}
                     centerContent
                     paddingVerticalSmall
-                    style={{
-                      width: 40,
-                      borderRadius: 20,
-                      backgroundColor: '#f9f9f9',
-                      borderWidth: 1,
-                      borderColor: colors.disabled,
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 4.65,
-
-                      elevation: 8,
-                    }}
+                    style={styles.sharePostButton}
                     iconLeft
                     onPress={() => setLikedBlog(!likedBlog)}
                   />
@@ -180,3 +103,84 @@ export const BlogsScreen = () => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  createBlogButton: {
+    borderRadius: 20,
+    backgroundColor: colors.darkGray,
+    borderWidth: 1,
+    borderColor: colors.disabled,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  postContainer: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: colors.dark,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+  likePostButton: {
+    borderRadius: 20,
+    backgroundColor: '#f9f9f9',
+    width: 40,
+    borderWidth: 1,
+    borderColor: colors.disabled,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
+  commentPostButton: {
+    borderRadius: 20,
+    backgroundColor: '#f9f9f9',
+    borderWidth: 1,
+    borderColor: colors.disabled,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
+  sharePostButton: {
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: '#f9f9f9',
+    borderWidth: 1,
+    borderColor: colors.disabled,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
+});

@@ -5,5 +5,12 @@ const sizes = {
   large: 20,
   extraLarge: 24,
 } as const;
-
-export {sizes};
+const HEADER_HEIGHT = 50;
+const BOTTOM_TAB_BAR_HEIGHT = 50;
+const BOTTOM_TAB_BAR_HEIGHT_WITH_MIDDLE_BUTTON = 130;
+export {
+  sizes,
+  BOTTOM_TAB_BAR_HEIGHT,
+  HEADER_HEIGHT,
+  BOTTOM_TAB_BAR_HEIGHT_WITH_MIDDLE_BUTTON,
+};

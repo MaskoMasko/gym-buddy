@@ -14,6 +14,7 @@ import {Icon} from '../svg/icons/Icon';
 import {Text} from './Text';
 import {TouchableOpacity} from './TouchableOpacity';
 import {View} from './View';
+import {colors} from '../style/palette';
 
 type HeaderType = BottomTabHeaderProps | NativeStackHeaderProps;
 interface AdditionalNativeStackHeaderOptionProps
@@ -51,7 +52,7 @@ export const Header = ({navigation, options, ...props}: HeaderProps) => {
           flex
           centerContent
           paddingMedium
-          style={styles.absoluteTopLeft}>
+          style={[styles.absoluteTopLeft, {zIndex: 100000000}]}>
           {shouldRenderLogo ? (
             <Image
               source={require('../assets/images/logo.png')}
@@ -76,6 +77,7 @@ const useStyles = () => {
   return StyleSheet.create({
     headerContainer: {
       paddingTop: insets.top + sizes.small,
+      backgroundColor: colors.white,
     },
     absoluteTopLeft: {
       position: 'absolute',

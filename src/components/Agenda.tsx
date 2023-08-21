@@ -7,6 +7,8 @@ import {Divider} from './Divider';
 import {IconButton} from './IconButton';
 import {Text} from './Text';
 import {View} from './View';
+import {BOTTOM_TAB_BAR_HEIGHT_WITH_MIDDLE_BUTTON} from '../style/componentConstants';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 dayjs.extend(localeData);
 export const Agenda = ({
@@ -24,6 +26,7 @@ export const Agenda = ({
     index: number;
   }) => React.ReactNode;
 }) => {
+  const insets = useSafeAreaInsets();
   const [displayMonth, setDisplayMonth] = useState(dayjs());
   const handleNextMonth = () => {
     setDisplayMonth(displayMonth.add(1, 'month'));
@@ -90,7 +93,14 @@ export const Agenda = ({
         }}
         keyExtractor={item => item}
         showsVerticalScrollIndicator={false}
-        ListFooterComponent={<View style={{paddingBottom: 300}} />}
+        ListFooterComponent={
+          <View
+            style={{
+              paddingBottom:
+                BOTTOM_TAB_BAR_HEIGHT_WITH_MIDDLE_BUTTON + insets.bottom,
+            }}
+          />
+        }
       />
     </View>
   );

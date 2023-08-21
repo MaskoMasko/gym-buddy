@@ -36,7 +36,7 @@ export const HomeScreen = () => {
       <View flex backgroundColorError>
         {currentLocation && (
           <MapView
-            style={{flex: 1}}
+            style={styles.flex}
             initialRegion={{
               latitude: currentLocation.latitude,
               longitude: currentLocation.longitude,
