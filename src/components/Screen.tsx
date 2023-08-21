@@ -1,6 +1,12 @@
 import React from 'react';
-import {KeyboardAvoidingView, ScrollView, StyleSheet} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {colors} from '../style/palette';
 import {ErrorView} from './ErrorView';
 import {LoadingView} from './LoadingView';
 import {View} from './View';
@@ -14,17 +20,27 @@ interface ScreenProps {
   };
   withTopInsets?: boolean;
   withBottomInsets?: boolean;
+
+  backgroundColorTheme?: boolean;
+  backgroundColorError?: boolean;
+  backgroundColorWarning?: boolean;
+  backgroundColorDark?: boolean;
+  backgroundColorLight?: boolean;
+  backgroundColorSuccess?: boolean;
+  backgroundColorAccent?: boolean;
+  backgroundColorLightDark?: boolean;
+  backgroundColorLightSoft?: boolean;
+  backgroundColorWhite?: boolean;
+  backgroundColorDarkGray?: boolean;
+  backgroundColorDisabled?: boolean;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  flexGrow: {
-    flexGrow: 1,
-  },
-  minHeight: {
-    minHeight: '100%',
+  inner: {
+    flex: 1,
   },
 });
 
@@ -34,8 +50,54 @@ export const Screen = ({
   queryStatus,
   withBottomInsets,
   withTopInsets,
+  backgroundColorTheme,
+  backgroundColorError,
+  backgroundColorWarning,
+  backgroundColorDark,
+  backgroundColorLight,
+  backgroundColorSuccess,
+  backgroundColorAccent,
+  backgroundColorLightDark,
+  backgroundColorLightSoft,
+  backgroundColorWhite,
+  backgroundColorDarkGray,
+  backgroundColorDisabled,
 }: ScreenProps) => {
   const insets = useSafeAreaInsets();
+  function resolveBackgroundColor() {
+    if (backgroundColorTheme) {
+      return colors.theme;
+    } else if (backgroundColorError) {
+      return colors.error;
+    } else if (backgroundColorWarning) {
+      return colors.warning;
+    } else if (backgroundColorDark) {
+      return colors.dark;
+    } else if (backgroundColorLight) {
+      return colors.light;
+    } else if (backgroundColorSuccess) {
+      return colors.success;
+    } else if (backgroundColorAccent) {
+      return colors.accent;
+    } else if (backgroundColorLightDark) {
+      return colors.lightDark;
+    } else if (backgroundColorLightSoft) {
+      return colors.lightSoft;
+    } else if (backgroundColorWhite) {
+      return colors.white;
+    } else if (backgroundColorDarkGray) {
+      return colors.darkGray;
+    } else if (backgroundColorDisabled) {
+      return colors.disabled;
+    } else {
+      return undefined;
+    }
+  }
+  const contentContainerStyle = StyleSheet.flatten({
+    paddingTop: withTopInsets ? insets.top : 0,
+    paddingBottom: withBottomInsets ? insets.bottom : 0,
+    backgroundColor: resolveBackgroundColor(),
+  });
   const content = (
     <>
       {queryStatus?.loading ? (
@@ -49,30 +111,18 @@ export const Screen = ({
   );
   return (
     <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
-      keyboardVerticalOffset={-(insets.bottom + insets.top)}
-      behavior={'padding'}>
+      keyboardVerticalOffset={
+        (withTopInsets ? insets.top : 0) +
+        (withBottomInsets ? insets.bottom : 0)
+      }>
       {preventScroll ? (
-        <View
-          style={[
-            styles.flexGrow,
-            {
-              paddingTop: withTopInsets ? insets.top : 0,
-              paddingBottom: withBottomInsets ? insets.bottom : 0,
-            },
-          ]}>
-          {content}
-        </View>
+        <View style={[styles.inner, contentContainerStyle]}>{content}</View>
       ) : (
         <ScrollView
-          contentContainerStyle={[styles.flexGrow]}
-          style={{
-            paddingTop: withTopInsets ? insets.top : 0,
-            paddingBottom: withBottomInsets ? insets.bottom : 0,
-          }}
           keyboardShouldPersistTaps={'never'}
-          // bounces={!preventScroll}
-        >
+          contentContainerStyle={[styles.inner, contentContainerStyle]}>
           {content}
         </ScrollView>
       )}
