@@ -11,6 +11,8 @@ interface CustomIconButtonProps {
   iconName: IconProps['name'];
   iconSize?: IconProps['size'];
   iconColor?: IconProps['color'];
+  iconRight?: boolean;
+  iconLeft?: boolean;
 }
 interface IconButtonProps
   extends TouchableOpacityProps,
@@ -22,22 +24,30 @@ export const IconButton = ({
   iconName,
   iconSize = 24,
   iconColor = colors.dark,
+  iconRight,
+  iconLeft,
   ...rest
 }: IconButtonProps) => {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      {...rest}
-      justifyContentSpaceBetween
-      alignItemsCenter
-      flexDirectionRow>
-      {children && (
+      centerContent
+      flexDirectionRow
+      paddingHorizontalSmall
+      {...rest}>
+      {(iconLeft || !iconRight) && (
         <>
-          <Text>{children}</Text>
-          <Spacer small />
+          <Icon name={iconName} size={iconSize} color={iconColor} />
+          {children !== undefined && <Spacer small />}
         </>
       )}
-      <Icon name={iconName} size={iconSize} color={iconColor} />
+      {children}
+      {iconRight && (
+        <>
+          {children !== undefined && <Spacer small />}
+          <Icon name={iconName} size={iconSize} color={iconColor} />
+        </>
+      )}
     </TouchableOpacity>
   );
 };
