@@ -38,8 +38,11 @@ export const WorkoutDetailsScreen = () => {
       withTopInsets
       withBottomInsets
       preventScroll>
-      <View paddingHorizontalMedium style={{paddingBottom: 110}}>
+      <View paddingHorizontalMedium>
         <FlatList
+          style={{
+            height: '92%',
+          }}
           data={queryData}
           keyExtractor={item => String(item.id ?? uuid.v4())}
           // ItemSeparatorComponent={() => <Spacer extraSmall />}

@@ -1,6 +1,6 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
+import dayjs from 'dayjs';
 import React, {useState} from 'react';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {CircleTimer} from '../../components/CircleTimer';
 import {Screen} from '../../components/Screen';
 import {Spacer} from '../../components/Spacer';
@@ -9,18 +9,16 @@ import {TouchableOpacity} from '../../components/TouchableOpacity';
 import {View} from '../../components/View';
 import {useAlert} from '../../hooks/useAlert';
 import {RootStackNavigationProps} from '../../navigation/RouterTypes';
-import {useExercises} from './fetch/useExercises';
-import {Icon} from '../../svg/icons/Icon';
 import {colors} from '../../style/palette';
+import {Icon} from '../../svg/icons/Icon';
+import {useExercises} from './fetch/useExercises';
 import {useWorkout} from './fetch/useWorkout';
-import dayjs from 'dayjs';
 
 const InnerModelComponent = ({createWorkout}: any) => {
   const navigation =
     useNavigation<
       RootStackNavigationProps<'WorkoutStartedScreen'>['navigation']
     >();
-  const insets = useSafeAreaInsets();
   const alert = useAlert();
   const {queryData} = useExercises();
   const [currentExerciseId, setCurrentExerciseId] = useState(0);
@@ -53,10 +51,7 @@ const InnerModelComponent = ({createWorkout}: any) => {
 
   const exercisesIdsList = queryData.filter(item => typeof item !== 'string');
   return (
-    <View
-      flex
-      centerContent
-      style={{paddingBottom: insets.bottom, paddingTop: insets.top}}>
+    <View flex alignItemsCenter>
       {currentExerciseId >= queryData.length - 1 ? (
         <>
           <Text
@@ -159,11 +154,17 @@ export const WorkoutStartedScreen = () => {
   const {createWorkout, loading, error} = useWorkout();
 
   return (
-    <Screen withTopInsets withBottomInsets queryStatus={{loading, error}}>
-      <View flex backgroundColorTheme>
-        <Text>{workoutCategory}</Text>
-        <InnerModelComponent createWorkout={createWorkout} />
-      </View>
+    <Screen
+      withTopInsets
+      withBottomInsets
+      backgroundColorTheme
+      queryStatus={{loading, error}}>
+      <Spacer extraLarge />
+      <Text colorOffWhite extraLarge style={{textAlign: 'center'}}>
+        {workoutCategory} workout
+      </Text>
+      <Spacer extraLarge />
+      <InnerModelComponent createWorkout={createWorkout} />
     </Screen>
   );
 };

@@ -10,10 +10,10 @@ import {TextInput} from '../../components/TextInput';
 import {Button} from '../../components/Button';
 import {useSendMessage} from './fetch/useSendMessage';
 import {colors} from '../../style/palette';
-import {ScreenNoScroll} from '../../components/ScreenNoScroll';
 import {Spacer} from '../../components/Spacer';
 import {useSocket} from '../../hooks/useSocket';
 import {client} from '../../service/react-query/queryClient';
+import {Screen} from '../../components/Screen';
 
 const defaultImage = require('../../assets/images/default-profile-img.png');
 
@@ -47,7 +47,7 @@ export const DirectMessagesScreen = () => {
   }, [socket]);
 
   return (
-    <ScreenNoScroll withBottomInsets queryStatus={{error, loading}}>
+    <Screen preventScroll withBottomInsets queryStatus={{error, loading}}>
       <FlatList
         ref={flatListScrollRef}
         style={styles.height90}
@@ -112,7 +112,7 @@ export const DirectMessagesScreen = () => {
           </Button>
         </View>
       </View>
-    </ScreenNoScroll>
+    </Screen>
   );
 };
 

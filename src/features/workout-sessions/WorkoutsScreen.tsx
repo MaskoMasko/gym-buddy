@@ -1,13 +1,13 @@
 import React from 'react';
 import {Pressable, ScrollView, StyleSheet} from 'react-native';
 import {ImageTransition} from '../../components/ImageTransition';
-import {ScreenNoScroll} from '../../components/ScreenNoScroll';
 import {Text} from '../../components/Text';
 import {View} from '../../components/View';
 import {useWorkoutCategories} from './fetch/useWorkoutCategories';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackNavigationProps} from '../../navigation/RouterTypes';
 import _ from 'lodash';
+import {Screen} from '../../components/Screen';
 
 export const WorkoutsScreen = () => {
   const navigation =
@@ -20,7 +20,7 @@ export const WorkoutsScreen = () => {
     error,
   } = useWorkoutCategories();
   return (
-    <ScreenNoScroll queryStatus={{loading, error}}>
+    <Screen preventScroll queryStatus={{loading, error}}>
       <View paddingLarge>
         <ScrollView showsVerticalScrollIndicator={false}>
           {workoutCategoriesList.map(category => {
@@ -48,6 +48,6 @@ export const WorkoutsScreen = () => {
           })}
         </ScrollView>
       </View>
-    </ScreenNoScroll>
+    </Screen>
   );
 };

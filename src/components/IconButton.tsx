@@ -4,7 +4,6 @@ import {TouchableOpacity} from './TouchableOpacity';
 import {LayoutProps} from '../hoc/withLayoutProps';
 import {Icon, IconProps} from '../svg/icons/Icon';
 import {colors} from '../style/palette';
-import {Text} from './Text';
 import {Spacer} from './Spacer';
 
 interface CustomIconButtonProps {
