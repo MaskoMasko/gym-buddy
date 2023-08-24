@@ -98,25 +98,20 @@ export const Screen = ({
     paddingBottom: withBottomInsets ? insets.bottom : 0,
     backgroundColor: resolveBackgroundColor(),
   });
-  const content = (
-    <>
-      {queryStatus?.loading ? (
-        <LoadingView />
-      ) : queryStatus?.error ? (
-        <ErrorView />
-      ) : (
-        <>{children}</>
-      )}
-    </>
-  );
+
+  if (queryStatus?.loading) {
+    return <LoadingView />;
+  }
+  if (queryStatus?.error) {
+    return <ErrorView />;
+  }
+
+  const content = <>{children}</>;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
-      keyboardVerticalOffset={
-        (withTopInsets ? insets.top : 0) +
-        (withBottomInsets ? insets.bottom : 0)
-      }>
+      keyboardVerticalOffset={preventScroll ? 0 : 100}>
       {preventScroll ? (
         <View style={[styles.inner, contentContainerStyle]}>{content}</View>
       ) : (
