@@ -11,6 +11,8 @@ import {Icon} from '../svg/icons/Icon';
 import {WorkoutDetailsScreen} from '../features/workout-sessions/WorkoutDetailsScreen';
 import {CreateWorkoutScreen} from '../features/workout-sessions/CreateWorkoutScreen';
 import {WorkoutStartedScreen} from '../features/workout-sessions/WorkoutStartedScreen';
+import {CreatePostScreen} from '../features/fitness-news/CreatePostScreen';
+import {PostDetailsScreen} from '../features/fitness-news/PostDetailsScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -78,6 +80,16 @@ export const RootStack = () => {
         name={'AddFriendsScreen'}
         component={AddFriendsScreen}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={'PostDetailsScreen'}
+        component={PostDetailsScreen}
+        options={{title: 'Post Details'}}
+      />
+      <Stack.Screen
+        name={'CreatePostScreen'}
+        component={CreatePostScreen}
+        options={{title: 'Create New Post'}}
       />
     </Stack.Navigator>
   );
