@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {useMutation} from 'react-query';
 import {z} from 'zod';
 import {http} from '../../../service/http/http';
-import {client} from '../../../service/react-query/queryClient';
+import {queryClient} from '../../../service/react-query/queryClient';
 import {ResponseSchema} from '../../../util-types/zod-response-schema';
 import {create} from 'zustand';
 
@@ -121,7 +121,7 @@ export const useExercises = () => {
   };
   const mutation = useMutation(['exercises'], _getExercises, {
     async onSuccess() {
-      await client.invalidateQueries(['exercises']);
+      await queryClient.invalidateQueries(['exercises']);
     },
   });
   // https://github.com/TanStack/query/issues/1077

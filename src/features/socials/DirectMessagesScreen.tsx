@@ -12,7 +12,7 @@ import {useSendMessage} from './fetch/useSendMessage';
 import {colors} from '../../style/palette';
 import {Spacer} from '../../components/Spacer';
 import {useSocket} from '../../hooks/useSocket';
-import {client} from '../../service/react-query/queryClient';
+import {queryClient} from '../../service/react-query/queryClient';
 import {Screen} from '../../components/Screen';
 
 const defaultImage = require('../../assets/images/default-profile-img.png');
@@ -41,7 +41,7 @@ export const DirectMessagesScreen = () => {
       socket.on('disconnect', () => console.log('Socket disconnected'));
       socket.on('error', err => console.log('Socket error:', err));
       socket.on('greeting', async () => {
-        await client.invalidateQueries(['user']);
+        await queryClient.invalidateQueries(['user']);
       });
     }
   }, [socket]);

@@ -1,6 +1,6 @@
 import {useMutation} from 'react-query';
 import {http} from '../../../service/http/http';
-import {client} from '../../../service/react-query/queryClient';
+import {queryClient} from '../../../service/react-query/queryClient';
 import {z} from 'zod';
 import {useState} from 'react';
 
@@ -37,7 +37,7 @@ export const useAddFriend = () => {
     isError,
   } = useMutation(['add-friend'], _addFriend, {
     async onSuccess() {
-      await client.invalidateQueries(['user']);
+      await queryClient.invalidateQueries(['user']);
     },
   });
   return {addFriend, loading: isLoading, error: isError || zodError};

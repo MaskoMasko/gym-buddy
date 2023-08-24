@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {useMutation} from 'react-query';
 import {z} from 'zod';
 import {http} from '../../../service/http/http';
-import {client} from '../../../service/react-query/queryClient';
+import {queryClient} from '../../../service/react-query/queryClient';
 
 const CreateRoomSchema = z.object({
   id: z.number(),
@@ -58,7 +58,7 @@ export const useCreateRoom = () => {
     isError,
   } = useMutation(['create-room'], _createRoom, {
     async onSuccess() {
-      await client.invalidateQueries(['user']);
+      await queryClient.invalidateQueries(['user']);
     },
   });
   return {createRoom, loading: isLoading, error: isError || zodError};

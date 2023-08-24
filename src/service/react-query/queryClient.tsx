@@ -4,7 +4,7 @@ import {
   QueryClientProvider as RQQueryClientProvider,
 } from 'react-query';
 
-export const client = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       structuralSharing: false,
@@ -18,6 +18,8 @@ export const QueryClientProvider = ({
   children: React.ReactNode;
 }) => {
   return (
-    <RQQueryClientProvider client={client}>{children}</RQQueryClientProvider>
+    <RQQueryClientProvider client={queryClient}>
+      {children}
+    </RQQueryClientProvider>
   );
 };

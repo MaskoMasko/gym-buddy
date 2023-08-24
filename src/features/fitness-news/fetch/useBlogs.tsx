@@ -3,6 +3,7 @@ import {http} from '../../../service/http/http';
 import {z} from 'zod';
 import {useState} from 'react';
 import {ResponseSchema} from '../../../util-types/zod-response-schema';
+import {queryClient} from '../../../service/react-query/queryClient';
 
 const BlogSchema = z.object({
   id: z.number(),
@@ -29,20 +30,24 @@ const BlogSchema = z.object({
       id: z.number(),
       content: z.string(),
       createdAt: z.string(),
-      author: z.object({
-        id: z.number(),
-        name: z.string(),
-      }),
+      author: z.optional(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
+      ),
     }),
   ),
   likes: z.array(
     z.object({
       id: z.number(),
       createdAt: z.string(),
-      user: z.object({
-        id: z.number(),
-        name: z.string(),
-      }),
+      user: z.optional(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
+      ),
     }),
   ),
 });
@@ -78,7 +83,12 @@ export const useBlogs = () => {
     mutateAsync: createBlog,
     isLoading: createBlogLoading,
     isError: createBlogError,
-  } = useMutation(['blogs'], _createBlog);
+  } = useMutation(['blogs'], _createBlog, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['blogs']);
+    },
+  });
+
   return {
     createBlog,
     blogsList: ((data && data.data) ?? []) as Blog[],
