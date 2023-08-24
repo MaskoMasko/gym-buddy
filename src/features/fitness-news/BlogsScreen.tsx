@@ -1,21 +1,32 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Screen} from '../../components/Screen';
-import {Text} from '../../components/Text';
-import {View} from '../../components/View';
-import {useBlogs} from './fetch/useBlogs';
-import {colors} from '../../style/palette';
-import {FlatList, Image, StyleSheet} from 'react-native';
+import {FlatList, Image, Share, StyleSheet} from 'react-native';
 import {IconButton} from '../../components/IconButton';
+import {Screen} from '../../components/Screen';
 import {Spacer} from '../../components/Spacer';
+import {Text} from '../../components/Text';
+import {TouchableOpacity} from '../../components/TouchableOpacity';
+import {View} from '../../components/View';
+import useAuth from '../../hooks/useAuth';
+import {RootStackNavigationProps} from '../../navigation/RouterTypes';
+import {colors} from '../../style/palette';
+import {useBlogs} from './fetch/useBlogs';
+import {useLikes} from './fetch/useLikes';
 
 export const BlogsScreen = () => {
-  const [likedBlog, setLikedBlog] = useState(false);
+  const {loggedUser} = useAuth();
   const {blogsList, loading, error} = useBlogs();
+  const [isPressInShare, setIsPressInShare] = useState(false);
+  const navigation =
+    useNavigation<RootStackNavigationProps<'RootBottomTab'>['navigation']>();
+  const {createLike, deleteLike} = useLikes();
+
   return (
     <Screen preventScroll withTopInsets queryStatus={{loading, error}}>
       <FlatList
         data={blogsList}
         keyExtractor={item => String(item.id)}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
           <View
             flexDirectionRow
@@ -27,18 +38,26 @@ export const BlogsScreen = () => {
               <IconButton
                 iconRight
                 iconName="circle-plus"
-                iconColor={colors.white}>
-                <Text colorOffWhite onPress={async () => {}}>
-                  Create
-                </Text>
+                iconColor={colors.white}
+                onPress={() => navigation.navigate('CreatePostScreen')}>
+                <Text colorOffWhite>Create</Text>
               </IconButton>
             </View>
           </View>
         )}
         renderItem={({item: blog}) => {
+          const didUserLike = blog.likes.find(
+            like => like.user?.id === loggedUser?.id,
+          );
           return (
             <View paddingVerticalSmall paddingHorizontalMedium>
-              <View style={styles.postContainer} backgroundColorWhite>
+              <TouchableOpacity
+                style={styles.postContainer}
+                backgroundColorWhite
+                onPress={() =>
+                  navigation.navigate('PostDetailsScreen', {post: blog})
+                }
+                activeOpacity={0.7}>
                 <Text large>{blog.title}</Text>
                 <Text weightLight>{blog.content}</Text>
                 <Spacer extraSmall />
@@ -63,15 +82,30 @@ export const BlogsScreen = () => {
                   justifyContentSpaceBetween>
                   <View flexDirectionRow>
                     <IconButton
-                      iconName={likedBlog ? 'heart-filled' : 'heart-empty'}
-                      iconColor={!likedBlog ? colors.dark : colors.error}
+                      iconName={didUserLike ? 'heart-filled' : 'heart-empty'}
+                      iconColor={!didUserLike ? colors.dark : colors.error}
                       paddingVerticalSmall
                       iconSize={20}
                       centerContent
                       style={styles.likePostButton}
                       iconLeft
-                      onPress={() => setLikedBlog(!likedBlog)}
-                    />
+                      onPress={async () => {
+                        if (!loggedUser) {
+                          return;
+                        }
+                        if (didUserLike) {
+                          return await deleteLike({
+                            postId: blog.id,
+                            userId: loggedUser.id,
+                          });
+                        }
+                        return await createLike({
+                          postId: blog.id,
+                          userId: loggedUser.id,
+                        });
+                      }}>
+                      <Text extraSmall>Likes: {blog.likes.length}</Text>
+                    </IconButton>
                     <Spacer small />
                     <IconButton
                       iconName={'comment'}
@@ -80,22 +114,30 @@ export const BlogsScreen = () => {
                       paddingVerticalSmall
                       style={styles.commentPostButton}
                       iconLeft
-                      onPress={() => setLikedBlog(!likedBlog)}>
+                      onPress={() => {}}>
                       <Text extraSmall>Comments: {blog.comments.length}</Text>
                     </IconButton>
                   </View>
                   <IconButton
                     iconName={'share'}
                     iconSize={20}
-                    iconColor={!likedBlog ? colors.dark : colors.white}
+                    iconColor={isPressInShare ? colors.dark : colors.white}
                     centerContent
                     paddingVerticalSmall
                     style={styles.sharePostButton}
                     iconLeft
-                    onPress={() => setLikedBlog(!likedBlog)}
+                    onPressIn={() => {
+                      setIsPressInShare(true);
+                      Share.share({
+                        message: 'Share with something idk...',
+                        url: 'www.google.com',
+                        title: 'Share with',
+                      });
+                    }}
+                    onPressOut={() => setIsPressInShare(false)}
                   />
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           );
         }}
@@ -139,7 +181,7 @@ const styles = StyleSheet.create({
   likePostButton: {
     borderRadius: 20,
     backgroundColor: '#f9f9f9',
-    width: 40,
+    // width: 40,
     borderWidth: 1,
     borderColor: colors.disabled,
     shadowColor: '#000',
