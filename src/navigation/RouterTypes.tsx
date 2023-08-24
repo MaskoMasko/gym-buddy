@@ -1,6 +1,7 @@
 import type {RouteProp} from '@react-navigation/native';
 import type {StackNavigationProp} from '@react-navigation/stack';
 import type {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {Blog} from '../features/fitness-news/fetch/useBlogs';
 
 export type TabBarIconProps = {focused: boolean; color: string; size: number};
 
@@ -29,6 +30,8 @@ export type RootStackParamList = {
   WorkoutDetailsScreen: {workoutCategory: string};
   WorkoutStartedScreen: {workoutCategory: string};
   ProfileScreen: undefined;
+  CreatePostScreen: undefined;
+  PostDetailsScreen: {post: Blog};
 };
 
 export type RootStackNavigationProps<T extends keyof RootStackParamList> = {
