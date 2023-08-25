@@ -7,13 +7,19 @@ import {View} from '../../components/View';
 import {colors} from '../../style/palette';
 import {Icon} from '../../svg/icons/Icon';
 import {SocialBarHeader} from './SocialBarHeader';
-import {useGymLocations} from './fetch/useGymLocations';
+import {GymItemType, useGyms} from './fetch/useGyms';
+import {GymDetailsBottomSheet} from './GymDetailsBottomSheet';
 
 export const dropdownToggleButtonHeight = 25;
 export const HomeScreen = () => {
   const [socialHeaderHeight, setSocialHeaderHeight] = useState(0);
+  const [isGymDetailsBottomSheetVisible, setIsGymDetailsBottomSheetVisible] =
+    useState(false);
+  const [selectedGym, setSelectedGym] = useState<GymItemType | undefined>(
+    undefined,
+  );
 
-  const gymLocations = useGymLocations();
+  const {queryData, loading, error} = useGyms();
 
   const [currentLocation, setCurrentLocation] = useState<
     | {
@@ -30,9 +36,7 @@ export const HomeScreen = () => {
   });
 
   return (
-    <Screen
-      preventScroll
-      queryStatus={{loading: gymLocations.loading, error: gymLocations.error}}>
+    <Screen preventScroll queryStatus={{loading, error}}>
       <View flex backgroundColorError>
         {currentLocation && (
           <MapView
@@ -47,15 +51,19 @@ export const HomeScreen = () => {
             <Marker coordinate={currentLocation} title="Your location">
               <Icon name="map-marker" size={35} color={colors.success} />
             </Marker>
-            {gymLocations.queryData.map(location => {
+            {queryData.map(gym => {
               return (
                 <Marker
-                  key={location.id}
+                  key={gym.id}
                   coordinate={{
-                    latitude: Number(location.latitude),
-                    longitude: Number(location.longitude),
+                    latitude: Number(gym.latitude),
+                    longitude: Number(gym.longitude),
                   }}
-                  title={location.name}>
+                  title={gym.name}
+                  onPress={() => {
+                    setSelectedGym(gym);
+                    setIsGymDetailsBottomSheetVisible(true);
+                  }}>
                   <Icon name="map-marker" size={35} color={colors.error} />
                 </Marker>
               );
@@ -75,6 +83,11 @@ export const HomeScreen = () => {
         }}>
         <SocialBarHeader />
       </View>
+      <GymDetailsBottomSheet
+        isVisible={isGymDetailsBottomSheetVisible}
+        setIsVisible={setIsGymDetailsBottomSheetVisible}
+        gymData={selectedGym}
+      />
     </Screen>
   );
 };
