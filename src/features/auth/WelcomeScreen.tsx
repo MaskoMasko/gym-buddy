@@ -23,7 +23,7 @@ const welcomeSchema = yup.object().shape({
 export const WelcomeScreen = () => {
   const styles = useStyles();
   const navigation = useNavigation();
-  const [formData, setFormData] = useState({email: ''});
+  const [formData, setFormData] = useState({email: __DEV__ ? 'm@m.com' : ''});
   const [validationErrors, setValidationErrors] = useState<Record<any, any>>(
     {},
   );
