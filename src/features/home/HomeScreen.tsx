@@ -6,9 +6,10 @@ import {Screen} from '../../components/Screen';
 import {View} from '../../components/View';
 import {colors} from '../../style/palette';
 import {Icon} from '../../svg/icons/Icon';
+import {GymDetailsBottomSheet} from './GymDetailsBottomSheet';
+import {MapLegend} from './MapLegend';
 import {SocialBarHeader} from './SocialBarHeader';
 import {GymItemType, useGyms} from './fetch/useGyms';
-import {GymDetailsBottomSheet} from './GymDetailsBottomSheet';
 
 export const dropdownToggleButtonHeight = 25;
 export const HomeScreen = () => {
@@ -37,7 +38,7 @@ export const HomeScreen = () => {
 
   return (
     <Screen preventScroll queryStatus={{loading, error}}>
-      <View flex backgroundColorError>
+      <View flex>
         {currentLocation && (
           <MapView
             style={styles.flex}
@@ -88,6 +89,7 @@ export const HomeScreen = () => {
         setIsVisible={setIsGymDetailsBottomSheetVisible}
         gymData={selectedGym}
       />
+      <MapLegend />
     </Screen>
   );
 };

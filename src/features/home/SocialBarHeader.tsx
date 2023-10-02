@@ -32,7 +32,11 @@ export const SocialBarHeader = () => {
         );
       }}
       style={animatedStyle}>
-      <View flexDirectionRow centerContent style={styles.headerContainer}>
+      <View
+        flexDirectionRow
+        centerContent
+        style={styles.headerContainer}
+        paddingHorizontalSmall>
         <View flex paddingSmall>
           <TextInput label={'Search places'} />
         </View>

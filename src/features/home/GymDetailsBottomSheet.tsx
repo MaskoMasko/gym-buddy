@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {View} from '../../components/View';
 import {Text} from '../../components/Text';
 import {GymItemType} from './fetch/useGyms';
@@ -13,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {colors} from '../../style/palette';
 import {sizes} from '../../style/componentConstants';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Linking, ScrollView, Image} from 'react-native';
 
 export const GymDetailsBottomSheet = ({
   isVisible,
@@ -57,22 +57,45 @@ export const GymDetailsBottomSheet = ({
   }
   return (
     <Animated.View style={[styles.bottomSheetContainer, animatedStyle]}>
-      <View flexDirectionRow alignItemsCenter justifyContentSpaceBetween>
-        <Text large weightSemibold>
-          {gymData.name}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View flexDirectionRow alignItemsCenter justifyContentSpaceBetween>
+          <Text large weightSemibold>
+            {gymData.name}
+          </Text>
+          <IconButton iconName="close" onPress={handleClose} />
+        </View>
+        <Spacer extraSmall />
+        <View flexDirectionRow alignItemsCenter style={{gap: 5}}>
+          <Text>Rating: {gymData.rating}</Text>
+          <Icon name="star" color={'#fcba03'} size={20} />
+        </View>
+        <Text weightLight>Address: {gymData.address}</Text>
+        <Text weightLight>
+          Website:{' '}
+          <Text
+            onPress={async () =>
+              !__DEV__ ? await Linking.openURL(gymData.website) : {}
+            }
+            style={{textDecorationLine: 'underline'}}>
+            {gymData.website}
+          </Text>
         </Text>
-        <IconButton iconName="close" onPress={handleClose} />
-      </View>
-      <Spacer extraSmall />
-      <View flexDirectionRow alignItemsCenter style={{gap: 5}}>
-        <Text>Rating: {gymData.rating}</Text>
-        <Icon name="star" color={'#fcba03'} size={20} />
-      </View>
-      <Text weightLight>Address: {gymData.address}</Text>
-      <Text weightLight>
-        Website:{' '}
-        <Text style={{textDecorationLine: 'underline'}}>{gymData.website}</Text>
-      </Text>
+        <Text weightLight>Images:</Text>
+        <ScrollView horizontal>
+          {gymData.images.map(image => {
+            return (
+              <Fragment key={image.id}>
+                <Image
+                  source={{uri: image.uri}}
+                  style={{width: 150, height: 150}}
+                />
+                <Spacer extraSmall />
+              </Fragment>
+            );
+          })}
+        </ScrollView>
+        <Spacer small />
+      </ScrollView>
     </Animated.View>
   );
 };
@@ -83,7 +106,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 200,
+    height: 300,
+    zIndex: 100,
     backgroundColor: colors.white,
     padding: sizes.medium,
   },
