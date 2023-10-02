@@ -15,6 +15,7 @@ import {Text} from './Text';
 import {TouchableOpacity} from './TouchableOpacity';
 import {View} from './View';
 import {colors} from '../style/palette';
+import {IconButton} from './IconButton';
 
 type HeaderType = BottomTabHeaderProps | NativeStackHeaderProps;
 interface AdditionalNativeStackHeaderOptionProps
@@ -44,30 +45,35 @@ export const Header = ({navigation, options, ...props}: HeaderProps) => {
       paddingMedium
       {...props}>
       {!canGoBack && !shouldRenderLogo ? null : (
-        <TouchableOpacity
-          hitSlop={{top: 5, left: 5, right: 5, bottom: 5}}
-          activeOpacity={0.3}
-          //myb this will need a small change
-          onPress={canGoBack ? navigation.goBack : undefined}
-          flex
-          centerContent
-          paddingMedium
-          style={[styles.absoluteTopLeft, {zIndex: 100000000}]}>
-          {shouldRenderLogo ? (
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.headerIconSize}
-            />
-          ) : (
-            <Icon name="back-arrow" />
-          )}
-        </TouchableOpacity>
+        <View flex paddingVerticalExtraLarge>
+          <TouchableOpacity
+            hitSlop={{top: 5, left: 5, right: 5, bottom: 5}}
+            activeOpacity={0.3}
+            //myb this will need a small change
+            onPress={canGoBack ? navigation.goBack : undefined}
+            flex
+            centerContent
+            paddingMedium
+            style={[styles.absoluteTopLeft, {zIndex: 100000000}]}>
+            {shouldRenderLogo ? (
+              <Image
+                source={require('../assets/images/logo.png')}
+                style={styles.headerIconSize}
+              />
+            ) : (
+              <Icon name="back-arrow" />
+            )}
+          </TouchableOpacity>
+        </View>
       )}
       {title && (
-        <Text style={styles.headerTitle} large>
-          {title}
-        </Text>
+        <View style={{flexGrow: 1}}>
+          <Text style={styles.headerTitle} large>
+            {title}
+          </Text>
+        </View>
       )}
+      <IconButton flex iconName="adjust" justifyContentFlexEnd />
     </View>
   );
 };
@@ -81,10 +87,11 @@ const useStyles = () => {
     },
     absoluteTopLeft: {
       position: 'absolute',
-      left: 0,
+      top: 0,
       bottom: 0,
+      left: -20,
     },
     headerIconSize: {width: 70, height: 32},
-    headerTitle: {flex: 1, maxWidth: '80%', textAlign: 'center'},
+    headerTitle: {textAlign: 'center', paddingBottom: 5},
   });
 };
