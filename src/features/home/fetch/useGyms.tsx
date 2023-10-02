@@ -19,6 +19,22 @@ const GymItemSchema = z.object({
       gymId: z.number(),
     }),
   ),
+  images: z.array(
+    z.object({
+      id: z.number(),
+      uri: z.string(),
+      gymId: z.number(),
+    }),
+  ),
+  workingHours: z.array(
+    z.object({
+      id: z.number(),
+      day: z.string(),
+      open: z.string(),
+      close: z.string(),
+      gymId: z.number(),
+    }),
+  ),
 });
 
 export type GymItemType = z.infer<typeof GymItemSchema>;
@@ -28,7 +44,7 @@ export const useGyms = () => {
 
   const fetchGyms = async () => {
     try {
-      const response = await http.get('/gyms/base');
+      const response = await http.get('/gyms');
       const parse = z.array(GymItemSchema).safeParse(response.data.data);
       if (parse.success) {
         return response.data;
