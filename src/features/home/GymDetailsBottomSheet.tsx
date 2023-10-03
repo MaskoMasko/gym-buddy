@@ -94,7 +94,6 @@ export const GymDetailsBottomSheet = ({
             );
           })}
         </ScrollView>
-        <Spacer small />
       </ScrollView>
     </Animated.View>
   );
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 300,
+    height: 350,
     zIndex: 100,
     backgroundColor: colors.white,
     padding: sizes.medium,

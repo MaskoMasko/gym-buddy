@@ -73,7 +73,7 @@ export const Header = ({navigation, options, ...props}: HeaderProps) => {
           </Text>
         </View>
       )}
-      <IconButton flex iconName="adjust" justifyContentFlexEnd />
+      <IconButton flex iconName="adjust" justifyContentFlexEnd iconSize={32} />
     </View>
   );
 };
