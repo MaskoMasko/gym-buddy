@@ -9,6 +9,7 @@ import {View} from '../../components/View';
 import useAuth from '../../hooks/useAuth';
 import {RootStackNavigationProps} from '../../navigation/RouterTypes';
 import {useUsersChatRooms} from './fetch/useUsersChatRooms';
+import {Divider} from '../../components/Divider';
 
 export const MessagesScreen = () => {
   const navigation =
@@ -30,14 +31,18 @@ export const MessagesScreen = () => {
           return (
             <TouchableOpacity
               key={roomInfo.id}
-              backgroundColorDisabled
               activeOpacity={0.7}
               paddingVerticalExtraSmall
               paddingHorizontalSmall
-              style={styles.paddingVertical}
+              style={[styles.paddingVertical, {backgroundColor: '#eeeeee'}]}
               onPress={() =>
                 navigation.navigate('DirectMessagesScreen', {
-                  roomName: roomInfo.name,
+                  roomName:
+                    roomInfo.participants.length <= 2
+                      ? roomInfo.participants.filter(
+                          user => userId !== user.id,
+                        )[0].name
+                      : roomInfo.name,
                   roomId: roomInfo.id,
                 })
               }>
@@ -45,8 +50,7 @@ export const MessagesScreen = () => {
                 <TouchableOpacity
                   onPress={() => navigation.navigate('ProfileScreen')}
                   style={styles.borderRadius}
-                  paddingSmall
-                  backgroundColorWhite>
+                  paddingSmall>
                   <Image
                     source={require('../../assets/images/default-profile-img.png')}
                     style={styles.imageDimensions}
@@ -54,10 +58,23 @@ export const MessagesScreen = () => {
                 </TouchableOpacity>
                 <Spacer />
                 <View justifyContentCenter>
-                  <Text weightMedium>{roomInfo.name}</Text>
-                  <Text small>This will be last message</Text>
+                  {/* i need to do this better */}
+                  <Text>
+                    {roomInfo.participants.length <= 2
+                      ? roomInfo.participants.filter(
+                          user => userId !== user.id,
+                        )[0].name
+                      : roomInfo.name}
+                  </Text>
+                  <Text small weightLight>
+                    {typeof roomInfo.lastMessage === 'string'
+                      ? roomInfo.lastMessage
+                      : roomInfo.lastMessage.text}
+                  </Text>
                 </View>
               </View>
+              <Spacer small />
+              <Divider />
             </TouchableOpacity>
           );
         })}

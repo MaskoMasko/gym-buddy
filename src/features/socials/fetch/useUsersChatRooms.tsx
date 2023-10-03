@@ -7,6 +7,30 @@ const ChatRoomsSchema = z.array(
   z.object({
     id: z.number(),
     name: z.string(),
+    messages: z.array(
+      z.object({
+        id: z.number(),
+        text: z.string(),
+        senderId: z.number(),
+        chatRoomId: z.number(),
+      }),
+    ),
+    lastMessage: z.union([
+      z.object({
+        id: z.number(),
+        text: z.string(),
+        senderId: z.number(),
+        chatRoomId: z.number(),
+      }),
+      z.string(),
+    ]),
+    participants: z.array(
+      z.object({
+        id: z.number(),
+        email: z.string(),
+        name: z.string(),
+      }),
+    ),
   }),
 );
 

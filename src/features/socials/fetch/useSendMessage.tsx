@@ -19,19 +19,18 @@ export const useSendMessage = () => {
     });
     return response.data;
   };
-  const {
-    mutateAsync: sendMessage,
-    isLoading,
-    isError,
-  } = useMutation(['sent-message'], _sendMessage, {
-    // async onSuccess() {
-    //   await client.invalidateQueries(['user']);
-    // },
-  });
+  const {mutateAsync: sendMessage, isError} = useMutation(
+    ['sent-message'],
+    _sendMessage,
+    {
+      // async onSuccess() {
+      //   await client.invalidateQueries(['user']);
+      // },
+    },
+  );
 
   return {
     sendMessage,
-    loading: isLoading,
     error: isError,
   };
 };

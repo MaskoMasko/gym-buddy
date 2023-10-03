@@ -31,7 +31,7 @@ export const DirectMessagesScreen = () => {
   }, []);
   const messages = useMessages(params.roomId).store.messagesList;
   const {loggedUser} = useAuth();
-  const {sendMessage, error, loading} = useSendMessage();
+  const {sendMessage, error} = useSendMessage();
   const socket = useSocket();
   const flatListScrollRef = useRef<null | FlatList>(null);
 
@@ -47,7 +47,10 @@ export const DirectMessagesScreen = () => {
   }, [socket]);
 
   return (
-    <Screen preventScroll withBottomInsets queryStatus={{error, loading}}>
+    <Screen
+      preventScroll
+      withBottomInsets
+      queryStatus={{error, loading: false}}>
       <FlatList
         ref={flatListScrollRef}
         style={styles.height90}
